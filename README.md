@@ -19,6 +19,8 @@ Every deck is a single self-contained [Claude Design](https://claude.ai) canvas 
 | --- | --- |
 | [`closing-the-agentic-loop.dc.html`](decks/closing-the-agentic-loop.dc.html) | The Agent Conf talk — how Open Mercato keeps a 1M+ line ERP codebase moving 24/7 with autonomous coding agents |
 | [`open-mercato-slide-kit.dc.html`](decks/open-mercato-slide-kit.dc.html) | The reusable layout kit and design-token sheet every new deck starts from |
+| [`alphalist-cto-ai-engineering-webinar/`](decks/alphalist-cto-ai-engineering-webinar/index.html) | Optional — the Alphalist CTO AI Engineering webinar deck (standalone HTML, own assets) |
+| [`ai-tech-leaders-live-webinar/`](decks/ai-tech-leaders-live-webinar/index.html) | Optional — the AI Tech Leaders live webinar deck (standalone HTML, own assets) |
 
 ```
 decks/     the .dc.html decks + the talk's thumbnail
@@ -38,6 +40,8 @@ This serves the repo root on `http://localhost:3000` (or `$PORT`). Open `/` for 
 
 - `/decks/closing-the-agentic-loop.dc.html`
 - `/decks/open-mercato-slide-kit.dc.html`
+- `/decks/alphalist-cto-ai-engineering-webinar/`
+- `/decks/ai-tech-leaders-live-webinar/`
 
 A deck **must** be served over HTTP — opening a `.dc.html` file directly via `file://` breaks it, since the runtime fetches its own source to compile the template and loads React from a CDN.
 

@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic Coding at Scale — Open Mercato × AI Tech Leaders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ Open Mercato design system ============ */
+  :root {
+    --black: #0C0C0C;
+    --panel: #141414;
+    --panel-2: #1B1B1B;
+    --white: #FFFFFF;
+    --body: #D9D9D9;
+    --muted: #9E9E9E;
+    --subtle: #6D6D6D;
+    --divider: #262626;
+    --green: #B4F372;
+    --green-dark: #2F520B;
+    --violet: #BC9AFF;
+    --yellow: #EEFB63;
+    --font: 'Geist', -apple-system, sans-serif;
+    --mono: 'Geist Mono', 'SF Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; }
+  html, body { height: 100%; overflow: hidden; background: var(--black); }
+  body { font-family: var(--font); color: var(--white); -webkit-font-smoothing: antialiased; }
+
+  /* ============ Chrome (header / footer) ============ */
+  .chrome-top {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.4rem 3.2rem 1.1rem;
+    border-bottom: 1px solid var(--divider);
+    background: linear-gradient(to bottom, rgba(12,12,12,.92), rgba(12,12,12,.75));
+    backdrop-filter: blur(12px);
+  }
+  .chrome-top img { height: 26px; display: block; }
+  .chrome-label { font-family: var(--mono); font-size: 11px; letter-spacing: .35em; color: var(--subtle); text-transform: uppercase; }
+  .chrome-bottom {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 3.2rem 1.2rem;
+    border-top: 1px solid var(--divider);
+    background: linear-gradient(to top, rgba(12,12,12,.92), rgba(12,12,12,.75));
+    backdrop-filter: blur(12px);
+    font-family: var(--mono); font-size: 11px; letter-spacing: .25em; color: var(--subtle);
+  }
+  .progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--green); z-index: 60; transition: width .45s cubic-bezier(.77,0,.18,1); }
+  .counter b { color: var(--green); font-weight: 600; }
+  .nav-hint span { padding: 0 .3em; color: var(--muted); }
+
+  /* ============ Slides ============ */
+  .deck { height: 100%; position: relative; }
+  .slide {
+    position: absolute; inset: 0;
+    padding: 7.2rem 3.2rem 5.4rem;
+    display: flex; flex-direction: column; justify-content: center;
+    opacity: 0; visibility: hidden; transform: translateY(28px) scale(.985);
+    transition: opacity .55s cubic-bezier(.77,0,.18,1), transform .55s cubic-bezier(.77,0,.18,1), visibility 0s .55s;
+  }
+  .slide.active { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .slide-inner { width: 100%; max-width: 1320px; margin: 0 auto; }
+
+  /* reveal choreography */
+  .rv { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .slide.active .rv { opacity: 1; transform: none; }
+  .slide.active .rv:nth-child(1),  .slide.active [data-rv="1"]  { transition-delay: .08s; }
+  .slide.active .rv:nth-child(2),  .slide.active [data-rv="2"]  { transition-delay: .18s; }
+  .slide.active .rv:nth-child(3),  .slide.active [data-rv="3"]  { transition-delay: .28s; }
+  .slide.active .rv:nth-child(4),  .slide.active [data-rv="4"]  { transition-delay: .38s; }
+  .slide.active .rv:nth-child(5),  .slide.active [data-rv="5"]  { transition-delay: .48s; }
+  .slide.active .rv:nth-child(6),  .slide.active [data-rv="6"]  { transition-delay: .58s; }
+  .slide.active .rv:nth-child(7),  .slide.active [data-rv="7"]  { transition-delay: .68s; }
+  .slide.active .rv:nth-child(8),  .slide.active [data-rv="8"]  { transition-delay: .78s; }
+
+  /* ============ Typography ============ */
+  .eyebrow {
+    font-family: var(--mono); font-size: 12px; font-weight: 500;
+    letter-spacing: .4em; text-transform: uppercase; color: var(--green);
+    margin-bottom: 1.6rem;
+  }
+  .eyebrow .dim { color: var(--subtle); }
+  h1 { font-size: clamp(3rem, 7vw, 6.4rem); font-weight: 800; letter-spacing: -.04em; line-height: .98; }
+  h2 { font-size: clamp(2.1rem, 4.4vw, 3.6rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.04; margin-bottom: 1.1rem; }
+  .lede { font-size: clamp(1rem, 1.6vw, 1.3rem); color: var(--muted); font-weight: 400; max-width: 62ch; line-height: 1.5; }
+  .mono-sm { font-family: var(--mono); font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: var(--subtle); }
+
+  /* ============ Components ============ */
+  .grid { display: grid; gap: 1.1rem; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .split { display: grid; grid-template-columns: minmax(380px, 5fr) 6fr; gap: 3rem; align-items: center; }
+  .split.rev { grid-template-columns: 6fr minmax(380px, 5fr); }
+
+  .card {
+    background: var(--panel-2); border: 1px solid var(--divider);
+    padding: 1.5rem 1.6rem; position: relative; overflow: hidden;
+  }
+  .card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--green); }
+  .card.warn::before { background: var(--yellow); }
+  .card h4 { font-size: 1.06rem; font-weight: 700; letter-spacing: -.01em; margin: .5rem 0 .45rem; }
+  .card p { font-size: .92rem; color: var(--muted); line-height: 1.5; }
+  .card .k { font-family: var(--mono); font-size: 10px; letter-spacing: .3em; text-transform: uppercase; color: var(--subtle); }
+  .card .k.solved { color: var(--green); }
+  .card .strike { text-decoration: line-through; text-decoration-color: var(--green); text-decoration-thickness: 2px; }
+
+  .stat { padding: 1.8rem 0 0; }
+  .stat .num { font-size: clamp(2.6rem, 5.2vw, 4.6rem); font-weight: 800; letter-spacing: -.04em; line-height: 1; }
+  .stat .bar { width: 44px; height: 4px; background: var(--green); margin: .9rem 0 .7rem; }
+  .stat .lbl { font-family: var(--mono); font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); }
+
+  .shot {
+    border: 1px solid var(--divider); background: var(--panel);
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,.8);
+    overflow: hidden; position: relative;
+  }
+  .shot img { width: 100%; display: block; }
+  .shot-cap { font-family: var(--mono); font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--subtle); margin-top: .8rem; }
+  .shot-cap b { color: var(--green); font-weight: 500; }
+
+  ul.arrows { list-style: none; margin-top: 1.6rem; }
+  ul.arrows li { position: relative; padding: 0 0 .95rem 2rem; font-size: 1.02rem; color: var(--body); line-height: 1.5; }
+  ul.arrows li::before { content: '→'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+  ul.arrows li b { color: var(--white); }
+
+  .quote { border-left: 3px solid var(--green); padding: .35rem 0 .35rem 1.4rem; margin-top: 2.2rem; }
+  .quote b { display: block; font-size: 1.15rem; font-weight: 700; letter-spacing: -.01em; }
+  .quote span { color: var(--muted); font-size: 1.02rem; }
+
+  .term {
+    background: #090909; border: 1px solid var(--divider);
+    font-family: var(--mono); font-size: .95rem; line-height: 1.75;
+    padding: 1.6rem 1.8rem; color: var(--body);
+  }
+  .term .g { color: var(--green); } .term .d { color: var(--subtle); } .term .w { color: var(--white); }
+  .term-head { display: flex; align-items: center; gap: .7rem; margin-bottom: 1rem; }
+  .term-head i { width: 10px; height: 10px; background: var(--green); display: inline-block; }
+  .term-head span { font-family: var(--mono); font-size: 10px; letter-spacing: .3em; color: var(--subtle); text-transform: uppercase; }
+
+  .pill-strip { display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; margin-top: 2.4rem; font-family: var(--mono); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; }
+  .pill-strip .on { color: var(--green); font-weight: 600; }
+  .pill-strip .off { color: var(--muted); }
+
+  .lane { display: flex; align-items: center; gap: 1rem; padding: .65rem 0; border-bottom: 1px solid var(--divider); }
+  .lane:last-child { border-bottom: 0; }
+  .lane i { width: 9px; height: 9px; background: var(--green); flex: none; animation: pulse 2s infinite; }
+  .lane .a { font-family: var(--mono); font-weight: 700; font-size: .9rem; width: 92px; }
+  .lane .b { font-family: var(--mono); font-size: .82rem; color: var(--subtle); flex: 1; }
+  .lane .p { font-family: var(--mono); font-size: .72rem; color: var(--green); background: var(--green-dark); padding: .2rem .55rem; }
+  @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+
+  .step { display: grid; grid-template-columns: 44px 200px 1fr; align-items: center; gap: 1.1rem; padding: .68rem 0; border-bottom: 1px solid var(--divider); }
+  .step:last-child { border-bottom: 0; }
+  .step .n { font-family: var(--mono); font-weight: 700; color: var(--green); background: var(--panel-2); border: 1px solid var(--divider); width: 40px; height: 40px; display: grid; place-items: center; }
+  .step .t { font-weight: 700; font-size: 1.02rem; }
+  .step .d { color: var(--muted); font-size: .95rem; }
+
+  table.tbl { width: 100%; border-collapse: collapse; margin-top: 1.4rem; }
+  .tbl th { font-family: var(--mono); font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--subtle); text-align: left; padding: .5rem .8rem; border-bottom: 1px solid var(--divider); font-weight: 500; }
+  .tbl td { padding: .58rem .8rem; border-bottom: 1px solid var(--divider); font-size: .93rem; color: var(--body); }
+  .tbl td:first-child { font-family: var(--mono); font-weight: 600; color: var(--white); font-size: .88rem; }
+  .tbl tr:last-child td { border-bottom: 0; }
+  .tbl .oss { color: var(--green); font-weight: 600; }
+  .tbl .prop { color: var(--subtle); }
+  .tbl .bench { font-family: var(--mono); color: var(--white); }
+
+  .contact-row { display: grid; grid-template-columns: 130px 1fr; gap: .6rem; padding: .55rem 0; font-family: var(--mono); }
+  .contact-row .l { font-size: 11px; letter-spacing: .3em; color: var(--green); text-transform: uppercase; align-self: center; }
+  .contact-row .v { font-size: 1.05rem; color: var(--white); }
+
+  .kbd-hint { position: fixed; bottom: 4.2rem; left: 50%; transform: translateX(-50%); z-index: 49;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .3em; color: var(--subtle);
+    text-transform: uppercase; opacity: 0; pointer-events: none;
+    animation: hintPulse 7s 1.2s forwards; }
+  @keyframes hintPulse { 0% { opacity: 0 } 12% { opacity: .8 } 80% { opacity: .8 } 100% { opacity: 0 } }
+
+  .divider-glow { position: absolute; left: 3.2rem; right: 3.2rem; height: 1px;
+    background: linear-gradient(90deg, var(--green), transparent 60%); opacity: .5; }
+
+  @media (max-width: 900px) {
+    .split, .split.rev { grid-template-columns: 1fr; gap: 1.6rem; }
+    .cols-4 { grid-template-columns: 1fr 1fr; }
+    .cols-3 { grid-template-columns: 1fr; }
+    .slide { padding: 5.4rem 1.4rem 4.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<header class="chrome-top">
+  <img src="assets/logo-light.svg" alt="Open Mercato">
+  <div class="chrome-label">Agentic Coding at Scale</div>
+</header>
+<footer class="chrome-bottom">
+  <div>PIOTR KARWATKA · OPEN MERCATO</div>
+  <div class="counter"><b id="cur">01</b> / <span id="total">22</span></div>
+</footer>
+<div class="kbd-hint">← → · space · click to advance</div>
+
+<main class="deck" id="deck">
+
+<!-- 01 · TITLE (AI Tech Leaders webinar) -->
+<section class="slide">
+  <div class="slide-inner split" style="align-items:center">
+    <div>
+      <div class="eyebrow rv">// Webinar <span class="dim">·</span> Agentic coding at scale</div>
+      <img class="rv" src="assets/atl-logo.svg" alt="AI Tech Leaders" style="height:56px; display:block; margin:.3rem 0 1.4rem">
+      <h1 class="rv" style="font-size:clamp(2.6rem,6vw,5rem)">Your Team&nbsp;+&nbsp;AI.<br>At Scale<span style="color:var(--green)">.</span></h1>
+      <p class="lede rv" style="margin-top:1.6rem">How a 100-person team ships production software with autonomous coding agents.</p>
+      <div class="rv" style="margin-top:3rem">
+        <div style="font-weight:700; font-size:1.1rem">Piotr Karwatka</div>
+        <div style="color:var(--muted); font-size:.95rem">Founder · Open Mercato · AI Tech Leaders</div>
+        <div style="font-family:var(--mono); font-size:.85rem; color:var(--green); letter-spacing:.12em; margin-top:.9rem">aitechleaders.pl &nbsp;·&nbsp; openmercato.com</div>
+      </div>
+    </div>
+    <div class="rv" data-rv="4">
+      <div class="shot"><img src="assets/atl-hero.webp" alt="AI Tech Leaders — the instructors"></div>
+      <div class="shot-cap"><b>AI Tech Leaders</b> · a program by Piotr &amp; Tomek Karwatka, Patryk Lewczuk, Maciej Greń</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · AGENDA I -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// Agenda <span class="dim">·</span> Part 01 — The shift</div>
+    <h2 class="rv">What actually changed — and what didn't.</h2>
+    <p class="lede rv">First, the honest picture of building software with autonomous agents.</p>
+    <div class="grid cols-2 rv" style="margin-top:2rem">
+      <div class="card"><div class="k">01</div><h4>Vibe coding vs. agentic engineering</h4><p>Two modes, two use-cases. When each one wins — and where they break.</p></div>
+      <div class="card"><div class="k">02</div><h4>Developers become product people</h4><p>What the role turns into. What survives: communication, taste, judgment.</p></div>
+      <div class="card"><div class="k">03</div><h4>The economics</h4><p>2h feels like 8h. Output ≈ 3 days. Every company as a token factory.</p></div>
+      <div class="card"><div class="k">04</div><h4>Where AI still needs a human</h4><p>Context, security, business logic — the omni-super-senior with no self-motivation.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · AGENDA II -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// Agenda <span class="dim">·</span> Part 02 — What works</div>
+    <h2 class="rv">The practice: how 100+ agents stay coherent.</h2>
+    <p class="lede rv">Then, the concrete machinery that ships production code at scale.</p>
+    <div class="grid cols-3 rv" style="margin-top:1.8rem">
+      <div class="card"><div class="k">05</div><h4>Monorepo &amp; AGENTS.md</h4><p>One tree, a task router, context next to the code.</p></div>
+      <div class="card"><div class="k">06</div><h4>Spec-driven &amp; visual specs</h4><p>Specs first, ASCII/HTML mockups, atomic tasks, subagent loops.</p></div>
+      <div class="card"><div class="k">07</div><h4>Skills &amp; the pipeline</h4><p>25 autonomous skills — plan, review, QA-gate, merge.</p></div>
+      <div class="card"><div class="k">08</div><h4>Worktrees, tests &amp; CI</h4><p>Parallel agents, 1,400 Playwright, 3,980+ unit tests, real gates.</p></div>
+      <div class="card"><div class="k">09</div><h4>Cezar &amp; Sandboxes</h4><p>The orchestrator and zero-setup cloud dev environments.</p></div>
+      <div class="card"><div class="k">10</div><h4>The AI Tech Leaders program</h4><p>How your team learns to run all of this — safely.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · ABOUT -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// About Open Mercato</div>
+    <h2 class="rv">Start with 80% done.</h2>
+    <p class="lede rv">…and compose the remaining 20% with Codex, Claude &amp; a small team.</p>
+    <div class="quote rv">
+      <b>Not one line written by a human.</b>
+      <span>The architecture, the specs, the process — all human.</span>
+    </div>
+    <div class="grid cols-4 rv" style="margin-top:1.4rem">
+      <div class="stat"><div class="num" data-count="1700" data-suffix="+">0</div><div class="bar"></div><div class="lbl">Merged PRs</div></div>
+      <div class="stat"><div class="num" data-count="800" data-suffix="K+">0</div><div class="bar"></div><div class="lbl">Lines of code</div></div>
+      <div class="stat"><div class="num" data-count="4730">0</div><div class="bar"></div><div class="lbl">Tests (unit+PW)</div></div>
+      <div class="stat"><div class="num" data-count="100" data-suffix="+">0</div><div class="bar"></div><div class="lbl">Contributors</div></div>
+    </div>
+    <div class="pill-strip rv">
+      <span class="on">Since Sep 2025</span><span class="off">MIT-licensed</span><span class="off">Next.js</span><span class="off">React</span><span class="off">TypeScript</span>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · ATL ANNOUNCEMENT (early hook) -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv" style="color:var(--violet)">// Exclusive <span class="dim">·</span> Released for AI Tech Leaders</div>
+    <h2 class="rv">We open-sourced our whole toolchain — for this cohort.</h2>
+    <p class="lede rv">Skills, Cezar and Sandboxes are public so participants of <b style="color:var(--white)">AI Tech Leaders</b> can run the exact pipeline you'll see today — in their own repos.</p>
+    <div class="grid cols-3 rv" style="margin-top:2rem">
+      <div class="card" style="padding:0">
+        <div style="height:170px; overflow:hidden; border-bottom:1px solid var(--divider)">
+          <img src="assets/skills-repo-real.png" alt="Skills" style="width:100%; height:100%; object-fit:cover; object-position:top">
+        </div>
+        <div style="padding:1rem 1.2rem 1.2rem"><h4 style="margin-top:0; font-size:1rem">Skills</h4><p style="font-size:.85rem">25 agent skills — the full PR pipeline, MIT.</p></div>
+      </div>
+      <div class="card" style="padding:0">
+        <div style="height:170px; overflow:hidden; border-bottom:1px solid var(--divider)">
+          <img src="assets/cezar-live-run.png" alt="Cezar" style="width:100%; height:100%; object-fit:cover; object-position:top">
+        </div>
+        <div style="padding:1rem 1.2rem 1.2rem"><h4 style="margin-top:0; font-size:1rem">Cezar</h4><p style="font-size:.85rem">Parallel coding-agent orchestrator.</p></div>
+      </div>
+      <div class="card" style="padding:0">
+        <div style="height:170px; overflow:hidden; border-bottom:1px solid var(--divider)">
+          <img src="assets/sandbox-dashboard-real.png" alt="Sandboxes" style="width:100%; height:100%; object-fit:cover; object-position:top">
+        </div>
+        <div style="padding:1rem 1.2rem 1.2rem"><h4 style="margin-top:0; font-size:1rem">Sandboxes</h4><p style="font-size:.85rem">Cloud dev envs, agents wired in.</p></div>
+      </div>
+    </div>
+    <div class="quote rv" style="border-color:var(--violet)"><b>Learn it here. Run it Monday.</b><span>Everything in the cohort is real, open, and yours to keep — more on each later.</span></div>
+  </div>
+</section>
+
+<!-- 06 · VIBE VS AGENTIC -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// Two modes of building with AI</div>
+    <h2 class="rv">Vibe coding vs. agentic engineering.</h2>
+    <p class="lede rv">Both have their place. We use both — for different things.</p>
+    <div class="grid cols-2 rv" style="margin-top:2rem">
+      <div class="card">
+        <div class="k">Zero → One</div>
+        <h4>Vibe coding</h4>
+        <p>Prototypes, demos, throwaways. Fast — until the app grows up.<br><br><b style="color:var(--green)">→</b> <b style="color:var(--white)"><s style="text-decoration-color:var(--green); text-decoration-thickness:2px">github-janitor</s> · internal tools</b><br><span style="font-family:var(--mono); font-size:.78rem; color:var(--muted); letter-spacing:.05em">deprecated — replaced by <b style="color:var(--green)">Cezar</b> (more on that later)</span></p>
+      </div>
+      <div class="card">
+        <div class="k">Made to stay</div>
+        <h4>Agentic engineering</h4>
+        <p>Process stays: BA → code → review → ship. AI owns code. Humans own the rest.<br><br><b style="color:var(--green)">→</b> <b style="color:var(--white)">Open Mercato · product development</b></p>
+      </div>
+    </div>
+    <div class="quote rv">
+      <b>AI isn't a junior dev — it's an omni-super-senior</b>
+      <span>without self-motivation, without context awareness.</span>
+    </div>
+    <div class="pill-strip rv">
+      <span class="on">2h feels like 8h</span><span class="off">Output ≈ 3 days</span><span class="off">No flow state</span><span class="off">One-shot &gt; iterative</span>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · WHAT CHANGED -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// What's new, what's not</div>
+    <h2 class="rv">Developers become product people.</h2>
+    <p class="lede rv">The code writes itself. The focus shifts to vision, taste, and articulation.</p>
+    <div class="grid cols-2 rv" style="margin-top:2rem">
+      <div class="card">
+        <div class="k">What changed</div>
+        <h4>The developer role</h4>
+        <p>Hiring: taste, delegation, code review. The 10× basement-coder — that's AI now. Juniors skip coding; system thinking is craft. Assembly → Turbo Pascal, all over again.</p>
+      </div>
+      <div class="card">
+        <div class="k">What didn't</div>
+        <h4>Everything around the code</h4>
+        <p>Communication — still the moat. UX, PM, Scrum Master — crucial. BAs, JIRA, security, DevOps — still prevail. Agents need process to scale.</p>
+      </div>
+    </div>
+    <div class="quote rv">
+      <b>Every company reinvents itself as a token factory.</b>
+      <span>Value-based pricing &gt; T&amp;M. Enterprise agentic engineering &gt; vibe-coded PoCs.</span>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · SECTION -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// Part 02 <span class="dim">·</span> The practice</div>
+    <h1 class="rv" style="font-size:clamp(2.8rem,6vw,5.4rem)">What works for us<span style="color:var(--green)">.</span></h1>
+    <p class="lede rv" style="margin-top:1.4rem">Six things that turned 100+ agentic contributors into one coherent codebase.</p>
+    <div class="pill-strip rv" style="margin-top:3.4rem">
+      <span class="on">01 Monorepo</span><span class="off">02 AGENTS.md</span><span class="off">03 Specs</span><span class="off">04 Skills</span><span class="off">05 Worktrees</span><span class="off">06 Tests</span>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · MONOREPO -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv">// 01 <span class="dim">·</span> Monorepo</div>
+      <h2 class="rv">One tree. Every module. Full LLM context.</h2>
+      <ul class="arrows">
+        <li class="rv">Every agent reads the same tree — no stitched-together repos.</li>
+        <li class="rv">Module boundaries survive, even with 100+ contributors.</li>
+        <li class="rv">Loose API docs were tried — complexity without context wins.</li>
+      </ul>
+      <div class="quote rv"><b>A monorepo gives the LLM the context it needs</b><span>— without flattening the architecture.</span></div>
+    </div>
+    <div class="rv" data-rv="4">
+      <div class="shot"><img src="assets/repo-packages.png" alt="Open Mercato monorepo packages"></div>
+      <div class="shot-cap"><b>github.com/open-mercato</b> /tree/main/packages</div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · AGENTS.MD -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv">// 02 <span class="dim">·</span> AGENTS.md router</div>
+      <h2 class="rv">AGENTS.md + task router.</h2>
+      <ul class="arrows">
+        <li class="rv">Root AGENTS.md is a table: <b>task → guide path</b>.</li>
+        <li class="rv">Each folder carries its own AGENTS.md — imports, patterns, constraints.</li>
+        <li class="rv"><b>~200 instructions per file</b> is the ceiling — follow rate drops beyond.</li>
+        <li class="rv">Guidance lives next to the code it governs.</li>
+      </ul>
+      <div class="quote rv"><b>A router beats a mega-prompt.</b><span>Local, context-aware — next to the code.</span></div>
+    </div>
+    <div class="rv" data-rv="5">
+      <div class="shot"><img src="assets/agents-root.png" alt="Root AGENTS.md task router"></div>
+      <div class="shot-cap"><b>/blob/main/AGENTS.md</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · SPEC-DRIVEN -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv">// 03 <span class="dim">·</span> Spec-driven development</div>
+      <h2 class="rv">Specs first. Code after.</h2>
+      <ul class="arrows">
+        <li class="rv">Every non-trivial change starts as <b>SPEC-XXX.md</b> in /.ai/specs.</li>
+        <li class="rv">LLM drafts via the custom <b>om-spec-writing</b> skill; humans review and approve.</li>
+        <li class="rv">33+ specs shipped — numbered, dated, release-tagged.</li>
+        <li class="rv">Claude writes noticeably better specs than Codex (for us).</li>
+      </ul>
+      <div class="quote rv"><b>A good spec is the new IDE.</b><span>One-shot rewrites beat iterative fixes — when the spec is right.</span></div>
+    </div>
+    <div class="rv" data-rv="5">
+      <div class="shot"><img src="assets/specs-folder.png" alt=".ai/specs folder"></div>
+      <div class="shot-cap"><b>/tree/main/.ai/specs</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · SKILLS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// 04 <span class="dim">·</span> Custom skills</div>
+    <h2 class="rv">Skills the agents actually reach for.</h2>
+    <p class="lede rv">Small, composable, scoped. Each one encodes a repeatable workflow with the right context.</p>
+    <div class="grid cols-2 rv" style="margin-top:2rem">
+      <div class="card"><h4 style="font-family:var(--mono); font-size:1rem">om-auto-review-pr</h4><p>First-pass code review on every PR — style, risk, test coverage, open questions.</p></div>
+      <div class="card"><h4 style="font-family:var(--mono); font-size:1rem">om-auto-fix-issue</h4><p>Takes a GitHub issue, scopes it, opens a draft PR with a working fix.</p></div>
+      <div class="card"><h4 style="font-family:var(--mono); font-size:1rem">om-auto-create-pr</h4><p>Reads a branch, writes the description, links issues, opens the PR.</p></div>
+      <div class="card"><h4 style="font-family:var(--mono); font-size:1rem">om-auto-continue-pr</h4><p>Picks up a stalled PR — addresses review comments, pushes updates.</p></div>
+    </div>
+    <div class="pill-strip rv"><span class="on">27 skills</span><span class="off">review · testing · release · housekeeping · PRs</span><span class="off">github.com/open-mercato/skills</span></div>
+  </div>
+</section>
+
+<!-- 10 · WORKTREES -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv">// 05 <span class="dim">·</span> Worktrees · ephemeral envs</div>
+      <h2 class="rv">Five agents. Five branches. Five Postgres instances.</h2>
+      <ul class="arrows">
+        <li class="rv">git worktree per agent — no branch-switching dance.</li>
+        <li class="rv">Ephemeral env: testcontainers brings up Postgres, Redis, workers.</li>
+        <li class="rv">Each agent runs its own integration tests on its own DB.</li>
+        <li class="rv">Agents never share state — parallel without the chaos.</li>
+      </ul>
+    </div>
+    <div class="rv" data-rv="5">
+      <div class="card" style="padding:1.8rem">
+        <div class="k" style="color:var(--green); margin-bottom:1rem">5 parallel agents</div>
+        <div class="lane"><i></i><span class="a">agent-01</span><span class="b">feat/pos-tile-browsing</span><span class="p">pg_01</span></div>
+        <div class="lane"><i style="animation-delay:.3s"></i><span class="a">agent-02</span><span class="b">fix/translations-phase2</span><span class="p">pg_02</span></div>
+        <div class="lane"><i style="animation-delay:.6s"></i><span class="a">agent-03</span><span class="b">feat/inbox-ops-agent</span><span class="p">pg_03</span></div>
+        <div class="lane"><i style="animation-delay:.9s"></i><span class="a">agent-04</span><span class="b">fix/rate-limiting-edge</span><span class="p">pg_04</span></div>
+        <div class="lane"><i style="animation-delay:1.2s"></i><span class="a">agent-05</span><span class="b">chore/ci-cache-bust</span><span class="p">pg_05</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · SKILLS REPO -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv">// Skills <span class="dim">·</span> now for everyone</div>
+      <h2 class="rv">Autonomous skills. Game-changer.</h2>
+      <ul class="arrows">
+        <li class="rv">25 agent skills — plan, implement, review, QA-gate, merge.</li>
+        <li class="rv">The pipeline that shipped ~800K LoC, zero hand-written.</li>
+        <li class="rv">Installs into 22+ coding agents. Technology-agnostic.</li>
+        <li class="rv">MIT-licensed. PRs welcome.</li>
+      </ul>
+      <div class="term rv" style="margin-top:1.6rem">
+        <span class="g">$</span> <span class="w">npx skills add open-mercato/skills --skill '*'</span><br>
+        <span class="g">$</span> <span class="w">/om-setup-agent-pipeline</span> <span class="d">· once per repository</span>
+      </div>
+    </div>
+    <div class="rv" data-rv="6">
+      <div class="shot"><img src="assets/skills-repo-real.png" alt="Open Mercato Skills — README hero with 30-second quickstart"></div>
+      <div class="shot-cap"><b>github.com/open-mercato/skills</b> · 30-second quickstart</div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · TESTS + CI -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv">// 06 <span class="dim">·</span> Tests + CI</div>
+      <h2 class="rv">AI writes it. Tests keep it honest.</h2>
+      <div class="grid cols-3 rv" style="gap:.4rem">
+        <div class="stat"><div class="num" style="font-size:2.4rem" data-count="1400">0</div><div class="bar"></div><div class="lbl">Playwright</div></div>
+        <div class="stat"><div class="num" style="font-size:2.4rem" data-count="3980" data-suffix="+">0</div><div class="bar"></div><div class="lbl">Unit tests</div></div>
+        <div class="stat"><div class="num" style="font-size:2.4rem" data-count="100" data-suffix="%">0</div><div class="bar"></div><div class="lbl">PRs on CI</div></div>
+      </div>
+      <div style="margin-top:1.4rem">
+        <div class="step rv"><span class="n">1</span><span class="t">PR opened</span><span class="d">from agent worktree</span></div>
+        <div class="step rv"><span class="n">2</span><span class="t">Tests run</span><span class="d">unit + 1,400 Playwright</span></div>
+        <div class="step rv"><span class="n">3</span><span class="t">Automatic CR</span><span class="d">om-auto-review-pr skill</span></div>
+        <div class="step rv"><span class="n">4</span><span class="t">Manual CR</span><span class="d">humans review the review</span></div>
+        <div class="step rv"><span class="n">5</span><span class="t">Manual QA</span><span class="d">release-gated before merge</span></div>
+      </div>
+    </div>
+    <div class="rv" data-rv="8">
+      <div class="shot"><img src="assets/actions-matrix.png" alt="GitHub Actions 15 parallel jobs"></div>
+      <div class="shot-cap"><b>actions</b> · ephemeral-integration matrix · 15 parallel</div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · UI MOCKUPS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// 07 <span class="dim">·</span> Specs, but visual</div>
+    <h2 class="rv">UI mockups as specs.</h2>
+    <p class="lede rv">ASCII, sketches, HTML mockups. Agents turn them into real UI.</p>
+    <div class="grid cols-2 rv" style="margin-top:1.8rem; align-items:start">
+      <div>
+        <div class="shot"><img src="assets/ascii-wireframe.png" alt="ASCII wireframe"></div>
+        <div class="shot-cap"><b>ASCII wireframe</b> · fits in a code block</div>
+      </div>
+      <div>
+        <div class="shot"><img src="assets/cezar-variants-compare.png" alt="Variants compare — LLM-generated UI"></div>
+        <div class="shot-cap"><b>Generated UI</b> · variants compare · pick the winner</div>
+      </div>
+    </div>
+    <div class="quote rv"><b>Fable (Anthropic) &amp; Sol (OpenAI) excel at deep specs + designs.</b><span>Feed the sketch, get back the HTML.</span></div>
+  </div>
+</section>
+
+<!-- 14 · ATOMIC TASKS -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv">// 08 <span class="dim">·</span> Atomic tasks + subagent loop</div>
+      <h2 class="rv">Split the spec. Loop the agents.</h2>
+      <div class="term rv" style="margin-top:1.4rem">
+        <div class="term-head"><i></i><span>Prompt · looping pattern for Claude</span></div>
+        <span class="g">1.</span> <span class="w">Split the spec into atomic tasks.</span><br>
+        <span class="g">2.</span> <span class="w">For each task:</span><br>
+        &nbsp;&nbsp;<span class="g">→</span> run it in a subagent<br>
+        &nbsp;&nbsp;<span class="g">→</span> unit tests MUST be green<br>
+        &nbsp;&nbsp;<span class="g">→</span> if UI touched OR every 5–6 tasks:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="d">Playwright via</span> <span class="g">om-integration-tests</span><br>
+        &nbsp;&nbsp;<span class="g">→</span> commit. move on.<br>
+        <span class="g">3.</span> <span class="w">Stop when the queue is empty and all green.</span>
+      </div>
+      <div class="quote rv"><b>om-integration-tests runs Playwright.</b><span>Can't see business context — still need a QA.</span></div>
+    </div>
+    <div class="rv" data-rv="4">
+      <div class="shot"><img src="assets/pr-commits.png" alt="Atomic commits — one per task"></div>
+      <div class="shot-cap"><b>pull/396/commits</b> · one per task</div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 · LONG-RUNNING -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// 08b <span class="dim">·</span> Long-running task in flight</div>
+    <h2 class="rv">One PR. 147 commits. Days of agent work.</h2>
+    <p class="lede rv">cezar/pull/396 — an agent shipping a whole phase, atomic commit by atomic commit.</p>
+    <div class="grid cols-2 rv" style="margin-top:1.8rem; align-items:start">
+      <div>
+        <div class="shot"><img src="assets/pr-commits.png" alt="Commit stream"></div>
+        <div class="shot-cap"><b>Commits</b> · pull/396/commits</div>
+      </div>
+      <div>
+        <div class="shot"><img src="assets/cezar-live-run.png" alt="Cezar live run with progress"></div>
+        <div class="shot-cap"><b>Live run</b> · progress + screenshot artifacts</div>
+      </div>
+    </div>
+    <div class="quote rv"><b>The agent narrates itself.</b><span>Commits are the log. Screenshots are the proof.</span></div>
+  </div>
+</section>
+
+<!-- 16 · LESSONS + CEZAR -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv">// 09 <span class="dim">·</span> Lessons learned + Cezar</div>
+      <h2 class="rv">Teach the agents. Forever.</h2>
+      <div style="margin-top:1.4rem">
+        <div class="step rv"><span class="n">1</span><span class="t">Agent ships.</span><span class="d">one atomic task per agent.</span></div>
+        <div class="step rv"><span class="n">2</span><span class="t">Human reviews.</span><span class="d">catches what AI missed.</span></div>
+        <div class="step rv"><span class="n">3</span><span class="t">Lesson back in.</span><span class="d">new line in AGENTS.md.</span></div>
+        <div class="step rv"><span class="n">4</span><span class="t">Next run, caught.</span><span class="d">never ships that mistake again.</span></div>
+      </div>
+      <div class="quote rv"><b>The codebase learns.</b><span>The same bug doesn't ship twice.</span></div>
+    </div>
+    <div class="rv" data-rv="6">
+      <div class="shot"><img src="assets/cezar-github-issues.png" alt="Cezar GitHub issues triage"></div>
+      <div class="shot-cap"><b>Cezar</b> · GitHub triage · by Patryk Lewczuk</div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 · PUBLISHING CEZAR -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv">// Publishing Cezar</div>
+      <h2 class="rv">The parallel coding-agent orchestrator.</h2>
+      <ul class="arrows">
+        <li class="rv">Task queue for every agent — one branch, one worktree.</li>
+        <li class="rv">Skills, schedules, memory, webhooks — batteries included.</li>
+        <li class="rv">Runs Claude Code, Codex, or any coding agent behind one CLI.</li>
+        <li class="rv"><b>Solves multi-agent coordination</b> — no more merge storms.</li>
+      </ul>
+      <div class="term rv" style="margin-top:1.4rem">
+        <span class="g">$</span> <span class="w">cd your-repo</span><br>
+        <span class="g">$</span> <span class="w">npx cezar-cli</span>
+      </div>
+    </div>
+    <div class="rv" data-rv="6">
+      <div class="shot"><img src="assets/cezar-review-gate.png" alt="Cezar review gate"></div>
+      <div class="shot-cap"><b>github.com/open-mercato/cezar</b> · review gate</div>
+    </div>
+  </div>
+</section>
+
+<!-- 18 · UX -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv">// 10 <span class="dim">·</span> UX + design-system guardian</div>
+      <h2 class="rv">UX is still human. AI helps.</h2>
+      <ul class="arrows">
+        <li class="rv">Our designer <b>Oliwia Zielińska</b> designs with AI tools — kept in sync with Figma.</li>
+        <li class="rv">Business-consulted — still irreplaceable.</li>
+        <li class="rv">AI for the chores: triage, specs, handoff.</li>
+        <li class="rv"><b>ds-guardian</b>: code ⇄ Figma, tokens in sync.</li>
+        <li class="rv">Design-system drift caught automatically.</li>
+      </ul>
+      <div class="quote rv"><b>Taste, empathy, business fit — human.</b><span>The chores around them — AI.</span></div>
+    </div>
+    <div class="rv" data-rv="7">
+      <div class="shot"><img src="assets/ds-guardian-skill.png" alt="om-ds-guardian SKILL.md — Design System Enforcement Agent"></div>
+      <div class="shot-cap"><b>/.ai/skills/om-ds-guardian</b> · Design System Enforcement Agent</div>
+    </div>
+  </div>
+</section>
+
+<!-- 19 · TOOLS + MODEL COUNCIL -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// 11 <span class="dim">·</span> The tools we actually use</div>
+    <h2 class="rv">Claude, Codex — and the open-weight council.</h2>
+    <p class="lede rv">Frontier models draft. A six-model review council checks the work — open-weight models included. Different priors → fewer blind spots.</p>
+    <table class="tbl rv">
+      <tr><th>Reviewer</th><th>Family</th><th>Openness</th><th>SWE-bench V.</th><th>What it brings</th></tr>
+      <tr><td>claude-fable-5</td><td>Anthropic</td><td class="prop">proprietary</td><td class="bench">—</td><td>specs, docs, long sessions · code-review host</td></tr>
+      <tr><td>gpt-5.6-sol</td><td>OpenAI</td><td class="prop">proprietary</td><td class="bench">—</td><td>sophisticated coding, patient CI loops</td></tr>
+      <tr><td>deepseek-v4-pro</td><td>DeepSeek</td><td class="oss">open-weight</td><td class="bench">80.6%</td><td>raw power · 93.5 LiveCodeBench · 1M context</td></tr>
+      <tr><td>kimi-code / k3</td><td>Moonshot</td><td class="oss">open-source</td><td class="bench">76.8%*</td><td>2.8T params — largest OSS model · agentic leader</td></tr>
+      <tr><td>glm-5.2</td><td>Zhipu</td><td class="oss">MIT</td><td class="bench">77.8%</td><td>744B MoE (40B active) · 1M context</td></tr>
+      <tr><td>mimo-v2.5-free</td><td>Xiaomi</td><td class="oss">open · free</td><td class="bench">—</td><td>the budget lens — surprisingly sharp findings</td></tr>
+    </table>
+    <div class="quote rv"><b>Our spec-review council: 6 models, 2 rounds, 40 findings.</b><span>The gap to frontier fell to ~5% in a year — open models earn their seat. (*K2.5 score)</span></div>
+  </div>
+</section>
+
+<!-- 20 · PRO TIPS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// 12 <span class="dim">·</span> Tips from the trenches</div>
+    <h2 class="rv">Things we learned. Do these.</h2>
+    <div class="grid cols-3 rv" style="margin-top:1.8rem">
+      <div class="card"><div class="k">CI loop</div><h4>"Fix it until CI is green."</h4><p>gh + "keep trying until green". Codex waits 40–50 min between CI runs. No hand-holding.</p></div>
+      <div class="card"><div class="k">Root cause</div><h4>Run integration tests, fix causes — per each PR.</h4><p>Not the symptom. Not the flake. The root. One pass every PR, minimum.</p></div>
+      <div class="card"><div class="k">Coverage</div><h4>Push unit coverage to 100% with LLMs.</h4><p>Scan V8 coverage reports. Ask the model to cover the gaps. Repeat until green.</p></div>
+      <div class="card"><div class="k">Safety net</div><h4>≥ 1 unit test per PR. Always.</h4><p>Tons of tests — the refactor safety net. Agents refactor fearlessly when tests pass.</p></div>
+      <div class="card"><div class="k">Stats work</div><h4>High coverage = confidence. Even human-written.</h4><p>The statistic protects you. Measure coverage, not authorship.</p></div>
+      <div class="card"><div class="k">QAs write tests</div><h4>Have QAs author deep integration scenarios.</h4><p>The skill runs tests. It can't imagine business edge cases. QAs know the weird paths.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 21 · OPEN CHALLENGES -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// 13 <span class="dim">·</span> What we haven't figured out yet</div>
+    <h2 class="rv">Open challenges.</h2>
+    <p class="lede rv">Where we're stuck. If you've cracked any of these — please talk to us.</p>
+    <div class="grid cols-2 rv" style="margin-top:1.8rem">
+      <div class="card"><div class="k solved">✓ Solved · Coordination</div><h4 class="strike">Multi-agent coordination without conflicts.</h4><p style="color:var(--white); font-weight:600"><span style="color:var(--green)">→</span> check Cezar!</p></div>
+      <div class="card warn"><div class="k">02 · Reviews at scale</div><h4>Reviewing 1,500+ files on a single branch.</h4><p>Too big for humans, too big for one context window. /ultrareview helps — not fully.</p></div>
+      <div class="card warn"><div class="k">03 · Token economics</div><h4>Token spend on multi-agent runs.</h4><p>Parallel agents burn tokens fast. Cost vs. quality is still guesswork.</p></div>
+      <div class="card warn"><div class="k">04 · "Done" is fuzzy</div><h4>Defining optimal completion criteria.</h4><p>Green tests ≠ done. Coverage ≠ done. The bar is fuzzy per task type.</p></div>
+    </div>
+    <div class="pill-strip rv"><span class="on">Got ideas? Let's talk.</span><span class="off">piotr@openmercato.com</span></div>
+  </div>
+</section>
+
+<!-- 22 · SANDBOXES -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv">// Try it yourself <span class="dim">·</span> Sandboxes</div>
+      <h2 class="rv">AI-assisted engineering. Zero setup.</h2>
+      <ul class="arrows">
+        <li class="rv">Cloud sandbox with <b>Open Mercato in dev mode</b> — ready in 30 seconds.</li>
+        <li class="rv"><b>Codex, Claude Code, Open Code</b> pre-installed and authenticated.</li>
+        <li class="rv">VS Code in the browser + web shell with full TUI/TMUX.</li>
+        <li class="rv">Live preview URLs, GitHub wired in, DevOps managed.</li>
+        <li class="rv">Production-grade in 1–2h: RBAC, encryption, multi-tenancy included.</li>
+      </ul>
+      <div class="quote rv"><b>sandboxes.openmercato.com</b><span>Enrollment open — reserve your seat on the waitlist.</span></div>
+    </div>
+    <div class="rv" data-rv="7">
+      <div class="shot"><img src="assets/sandbox-dashboard-real.png" alt="Open Mercato Sandboxes dashboard — AI credits, active sandboxes"></div>
+      <div class="shot-cap"><b>sandboxes.openmercato.com</b> · dashboard · AI credits + pooled sandboxes</div>
+    </div>
+  </div>
+</section>
+
+<!-- 23 · PRODUCT LINKS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// Take it home <span class="dim">·</span> Three things to try</div>
+    <h2 class="rv">Everything we showed — released.</h2>
+    <p class="lede rv">The skills, the orchestrator, the sandboxes. Open, installable, waiting for your repo.</p>
+    <div class="grid cols-4 rv" style="margin-top:2rem; gap:.9rem">
+      <a href="https://github.com/open-mercato/open-mercato" target="_blank" style="text-decoration:none; color:inherit">
+        <div class="card" style="padding:0">
+          <div style="height:150px; overflow:hidden; border-bottom:1px solid var(--divider)">
+            <img src="assets/repo-packages.png" alt="Open Mercato monorepo" style="width:100%; height:100%; object-fit:cover; object-position:top">
+          </div>
+          <div style="padding:1rem 1.2rem 1.2rem">
+            <h4 style="margin-top:0; font-size:1rem">Open Mercato</h4>
+            <p style="font-size:.85rem">The AI-supportive ERP/CRM framework itself. Start with 80% done.</p>
+            <p style="font-family:var(--mono); font-size:.7rem; letter-spacing:.08em; color:var(--green); margin-top:.6rem">github.com/open-mercato →</p>
+          </div>
+        </div>
+      </a>
+      <a href="https://github.com/open-mercato/skills" target="_blank" style="text-decoration:none; color:inherit">
+        <div class="card" style="padding:0">
+          <div style="height:150px; overflow:hidden; border-bottom:1px solid var(--divider)">
+            <img src="assets/skills-repo-real.png" alt="Open Mercato Skills" style="width:100%; height:100%; object-fit:cover; object-position:top">
+          </div>
+          <div style="padding:1rem 1.2rem 1.2rem">
+            <h4 style="margin-top:0; font-size:1rem">Skills</h4>
+            <p style="font-size:.85rem">25 agent skills running a full PR pipeline. Any repo, 22+ agents.</p>
+            <p style="font-family:var(--mono); font-size:.7rem; letter-spacing:.08em; color:var(--green); margin-top:.6rem">/skills →</p>
+          </div>
+        </div>
+      </a>
+      <a href="https://github.com/open-mercato/cezar" target="_blank" style="text-decoration:none; color:inherit">
+        <div class="card" style="padding:0">
+          <div style="height:150px; overflow:hidden; border-bottom:1px solid var(--divider)">
+            <img src="assets/cezar-review-gate.png" alt="Cezar orchestrator" style="width:100%; height:100%; object-fit:cover; object-position:top">
+          </div>
+          <div style="padding:1rem 1.2rem 1.2rem">
+            <h4 style="margin-top:0; font-size:1rem">Cezar</h4>
+            <p style="font-size:.85rem">The parallel coding-agent orchestrator. Worktrees, review gates.</p>
+            <p style="font-family:var(--mono); font-size:.7rem; letter-spacing:.08em; color:var(--green); margin-top:.6rem">/cezar →</p>
+          </div>
+        </div>
+      </a>
+      <a href="https://sandboxes.openmercato.com" target="_blank" style="text-decoration:none; color:inherit">
+        <div class="card" style="padding:0">
+          <div style="height:150px; overflow:hidden; border-bottom:1px solid var(--divider)">
+            <img src="assets/sandbox-dashboard-real.png" alt="Open Mercato Sandboxes" style="width:100%; height:100%; object-fit:cover; object-position:top">
+          </div>
+          <div style="padding:1rem 1.2rem 1.2rem">
+            <h4 style="margin-top:0; font-size:1rem">Sandboxes</h4>
+            <p style="font-size:.85rem">Cloud dev sandboxes with agents wired in. Ready in 30 seconds.</p>
+            <p style="font-family:var(--mono); font-size:.7rem; letter-spacing:.08em; color:var(--green); margin-top:.6rem">sandboxes.openmercato.com →</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="quote rv"><b>All GitHub projects MIT-licensed. Contributions welcome.</b><span>Use them, break them, PR them — we read every pull request.</span></div>
+  </div>
+</section>
+
+<!-- ATL PROGRAM · POSITIONING -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv" style="color:var(--violet)">// AI Tech Leaders <span class="dim">·</span> The program</div>
+    <h2 class="rv">From "I use AI to code" to "I run a large project built by AI."</h2>
+    <p class="lede rv">Every dev now "uses AI". Few know how to manage it in production. A hands-on program for engineering teams — 4 weeks, 25 lessons, live consults, sandboxes.</p>
+    <div class="grid cols-3 rv" style="margin-top:1.8rem">
+      <div class="card"><div class="k">The pain</div><h4>Vibe coding degrades at scale</h4><p>Great for 2 weeks, then chaos — inconsistent code, agents "doing their own thing", fixing more than building.</p></div>
+      <div class="card"><div class="k">Who it's for</div><h4>Senior devs, tech leads &amp; teams</h4><p>People who code professionally — and 5-person pilot squads from larger orgs rolling AI out across the company.</p></div>
+      <div class="card"><div class="k">The proof</div><h4>1M+ lines shipped by AI</h4><p>The exact workflow behind Open Mercato — taught by the people who built it, not theorists.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ATL PROGRAM · CURRICULUM (AI SDLC) -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv" style="color:var(--violet)">// AI Tech Leaders <span class="dim">·</span> Curriculum — the AI SDLC</div>
+    <h2 class="rv">Five stages. 25 lessons. Four weeks.</h2>
+    <p class="lede rv">The signature framework: one repeatable software-delivery lifecycle for autonomous agents — plus the team layer around it.</p>
+    <div style="margin-top:1.6rem">
+      <div class="step rv"><span class="n" style="color:var(--violet)">1</span><span class="t">Framework</span><span class="d">The foundation agents stick to — coding rules, patterns, database, infra, tests, CI.</span></div>
+      <div class="step rv"><span class="n" style="color:var(--violet)">2</span><span class="t">Guardrails</span><span class="d">Context engineering, skills, AGENTS.md in the Task-Router pattern, design system &amp; UI.</span></div>
+      <div class="step rv"><span class="n" style="color:var(--violet)">3</span><span class="t">Spec</span><span class="d">Spec-Driven Development instead of YOLO — Socratic specs, multi-phasing, atomic tasks.</span></div>
+      <div class="step rv"><span class="n" style="color:var(--violet)">4</span><span class="t">Delegation</span><span class="d">Agents interactive &amp; autonomous — worktrees, parallel development, task-completion criteria.</span></div>
+      <div class="step rv"><span class="n" style="color:var(--violet)">5</span><span class="t">Receipt</span><span class="d">Code review without reading every line, automated UI testing, Playwright, release management.</span></div>
+    </div>
+    <div class="pill-strip rv" style="margin-top:1.4rem"><span class="on" style="color:var(--violet)">+ Team layer</span><span class="off">roles &amp; responsibility</span><span class="off">workflow: idea → merged feature</span><span class="off">QA · UX · Scrum Master, AI-powered</span></div>
+  </div>
+</section>
+
+<!-- 26 · ATL MARKETING — WHY -->
+<section class="slide">
+  <div class="slide-inner split">
+    <div>
+      <div class="eyebrow rv" style="color:var(--violet)">// Why this cohort</div>
+      <h2 class="rv">Real work with agents. Not vibe coding.</h2>
+      <ul class="arrows">
+        <li class="rv" style="--g:var(--violet)">How large teams <b>actually</b> work with coding agents: tickets, PRs, automated review, integration tests, security, compliance.</li>
+        <li class="rv">Battle-tested on Open Mercato — <b>100+ contributors, 1,700+ merged PRs, zero prod fuckups.</b></li>
+        <li class="rv">A framework for <b>your</b> stack: Python, Go, Java, .NET, TypeScript.</li>
+        <li class="rv">Spec-driven development · PR · code review · QA · UX in the AI era.</li>
+      </ul>
+      <div class="quote rv" style="border-color:var(--violet)"><b>Built in the field, not the lecture hall.</b><span>Practitioners, not theorists.</span></div>
+    </div>
+    <div class="rv" data-rv="6">
+      <div class="shot"><img src="assets/atl-hero.webp" alt="AI Tech Leaders — the instructors"></div>
+      <div class="shot-cap"><b>Piotr &amp; Tomek Karwatka · Patryk Lewczuk · Maciej Greń</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ATL CTA (big split — sign-up panel on the right, hero background) -->
+<section class="slide">
+  <!-- full-bleed AI Tech Leaders hero background + dark gradient for legibility -->
+  <div style="position:absolute; inset:0; z-index:0;
+       background:
+         linear-gradient(90deg, rgba(12,12,12,.98) 0%, rgba(12,12,12,.95) 40%, rgba(12,12,12,.6) 66%, rgba(12,12,12,.8) 100%),
+         linear-gradient(0deg, rgba(12,12,12,.6), rgba(12,12,12,.2)),
+         url('assets/atl-hero.webp');
+       background-size:cover; background-position:center right;"></div>
+  <div class="slide-inner split" style="align-items:center; position:relative; z-index:1">
+    <div>
+      <div class="eyebrow rv" style="color:var(--violet)">// Join the program</div>
+      <h1 class="rv" style="font-size:clamp(2.6rem,6vw,5rem)">Start autumn 2026.<br>Don't miss it<span style="color:var(--violet)">.</span></h1>
+      <p class="lede rv" style="margin-top:1.4rem">A practical program for technical teams that want to work with AI — by Piotr Karwatka &amp; the Open Mercato team.</p>
+      <div class="rv" style="margin-top:2rem; max-width:560px">
+        <div class="contact-row"><span class="l" style="color:var(--violet)">Format</span><span class="v">4 weeks · 25 lessons · live consults</span></div>
+        <div class="contact-row"><span class="l" style="color:var(--violet)">Who</span><span class="v">engineering teams, mid-to-large orgs</span></div>
+      </div>
+    </div>
+    <a class="rv" data-rv="2" href="https://aitechleaders.pl" target="_blank" style="text-decoration:none; color:inherit; display:block">
+      <div class="card" style="padding:2.6rem 2.4rem; background:var(--panel-2); border-color:var(--violet)">
+        <div class="k" style="color:var(--violet)">Sign up</div>
+        <div style="font-size:clamp(2.2rem,3.6vw,3.2rem); font-weight:800; letter-spacing:-.03em; line-height:1.05; margin:1rem 0 1.4rem">
+          aitechleaders<span style="color:var(--violet)">.pl</span>
+        </div>
+        <div style="display:inline-flex; align-items:center; gap:.7rem; background:var(--violet); color:#0C0C0C; font-weight:700; font-size:1.15rem; padding:.95rem 1.8rem; letter-spacing:-.01em">
+          Reserve your team's seats →
+        </div>
+        <p style="color:var(--muted); font-size:.95rem; margin-top:1.6rem; line-height:1.5">Limited to 1,000 participants — organizations first. Join the waitlist and we'll send the agenda &amp; start dates.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- 29 · THANKS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="eyebrow rv">// End <span class="dim">·</span> Q &amp; A</div>
+    <h1 class="rv">Thanks<span style="color:var(--green)">.</span></h1>
+    <p class="lede rv" style="margin-top:1.4rem">Let's keep the loop going — reach out.</p>
+    <div class="rv" style="margin-top:3rem; max-width:560px">
+      <div class="contact-row"><span class="l">Email</span><span class="v">piotr@openmercato.com</span></div>
+      <div class="contact-row"><span class="l">LinkedIn</span><span class="v">linkedin.com/in/piotrkarwatka</span></div>
+      <div class="contact-row"><span class="l">Site</span><span class="v">openmercato.com</span></div>
+      <div class="contact-row"><span class="l">GitHub</span><span class="v">github.com/open-mercato</span></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+(() => {
+  const slides = [...document.querySelectorAll('.slide')];
+  const cur = document.getElementById('cur');
+  const total = document.getElementById('total');
+  const progress = document.getElementById('progress');
+  let idx = 0;
+  total.textContent = String(slides.length).padStart(2, '0');
+
+  // Animated counters
+  function animateCounters(slide) {
+    slide.querySelectorAll('[data-count]').forEach(el => {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.suffix || '';
+      const dur = 1100; const t0 = performance.now();
+      function tick(t) {
+        const p = Math.min((t - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased).toLocaleString('en-US') + (p === 1 ? suffix : '');
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function show(n, instant) {
+    idx = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    cur.textContent = String(idx + 1).padStart(2, '0');
+    progress.style.width = ((idx + 1) / slides.length * 100) + '%';
+    history.replaceState(null, '', '#' + (idx + 1));
+    setTimeout(() => animateCounters(slides[idx]), 350);
+  }
+
+  // Keyboard
+  addEventListener('keydown', e => {
+    if (['ArrowRight',' ','PageDown','Enter'].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+    else if (['ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); show(idx - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+  });
+
+  // Click / tap: right half → next, left half → prev
+  addEventListener('click', e => {
+    if (e.target.closest('a')) return;
+    (e.clientX > innerWidth * 0.25) ? show(idx + 1) : show(idx - 1);
+  });
+
+  // Touch swipe
+  let tx = null;
+  addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive: true});
+  addEventListener('touchend', e => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 48) (dx < 0) ? show(idx + 1) : show(idx - 1);
+    tx = null;
+  }, {passive: true});
+
+  // Wheel (throttled)
+  let wheelLock = 0;
+  addEventListener('wheel', e => {
+    const now = Date.now();
+    if (now - wheelLock < 700) return;
+    if (Math.abs(e.deltaY) < 24) return;
+    wheelLock = now;
+    (e.deltaY > 0) ? show(idx + 1) : show(idx - 1);
+  }, {passive: true});
+
+  // Deep-link via hash (incl. external hash changes)
+  function fromHash() {
+    const h = parseInt(location.hash.slice(1), 10);
+    show(isNaN(h) ? 0 : h - 1);
+  }
+  addEventListener('hashchange', fromHash);
+  fromHash();
+})();
+</script>
+</body>
+</html>
