@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="./support.js"></script>
+<script src="../shared/support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="./image-slot.js"></script>
+<script src="../shared/image-slot.js"></script>
 <style>
 html,body{margin:0;background:#08080A}
 a{color:#D8FB63;text-decoration:none}
@@ -25,7 +25,7 @@ a:hover{color:#fff}
 }
 </style>
 </helmet>
-<x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" hint-size="100%,100%">
+<x-import component-from-global-scope="deck-stage" from="../shared/deck-stage.js" width="1920" height="1080" hint-size="100%,100%">
 
 <section data-label="Tokens" data-speaker-notes="Reference sheet — copy these literals into new slides." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:40px;overflow:hidden">
   <div style="display:flex;align-items:center;justify-content:space-between;gap:24px">

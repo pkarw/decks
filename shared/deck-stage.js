@@ -363,7 +363,27 @@
        popping. Transitions are gated on :host([data-rail-anim]) — set only
        for the 200ms around the toggle — so window-resize and rail-width
        drag (which also call _fit) don't lag behind the cursor. */
-    .rail[data-user-hidden] { transform: translateX(-100%); }
+    .rail[data-user-hidden] { transform: translateX(-100%); transition: transform 160ms ease 350ms; }
+    .rail[data-user-hidden][data-hover-peek] { transform: translateX(0); transition: transform 160ms ease; }
+    /* Thin invisible strip at the viewport edge — hovering it (or the
+       revealed rail itself) peeks the rail open without pinning it; it
+       slides back out on mouseleave. Only needed while the rail is
+       user-hidden — a visible/pinned rail already covers this region. */
+    .rail-hover-zone {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      z-index: 2147482499;
+    }
+    .rail:not([data-user-hidden]) + .rail-resize + .rail-hover-zone,
+    .rail[data-presenting] + .rail-resize + .rail-hover-zone,
+    :host([no-rail]) .rail-hover-zone,
+    :host([noscale]) .rail-hover-zone { display: none; }
+    @media (max-width: 640px) {
+      .rail-hover-zone { display: none; }
+    }
     :host([data-rail-anim]) .rail { transition: transform 200ms cubic-bezier(.3,.7,.4,1); }
     :host([data-rail-anim]) .stage { transition: left 200ms cubic-bezier(.3,.7,.4,1); }
     :host([data-rail-anim]) .canvas { transition: transform 200ms cubic-bezier(.3,.7,.4,1); }
@@ -770,12 +790,14 @@
       // for presenter-popup thumbnail iframes (three per view — cur/prev/next).
       if (this._railEnabled || this.hasAttribute('no-rail')) return;
       this._railEnabled = true;
-      // Per-viewer preference — restored alongside rail width. Default on;
-      // only a stored '0' (from the TweaksPanel toggle) hides it.
-      this._railVisible = true;
+      // Per-viewer preference — restored alongside rail width. Default off
+      // (hover-to-peek reveals it); only a stored '1' (from the TweaksPanel
+      // toggle, or a viewer who pinned it open) keeps it shown.
+      this._railVisible = false;
       try {
-        if (localStorage.getItem('deck-stage.railVisible') === '0') this._railVisible = false;
+        if (localStorage.getItem('deck-stage.railVisible') === '1') this._railVisible = true;
       } catch (e) {}
+      this._setupRailHoverPeek();
       // Live thumbnail updates: watch the light-DOM slides for content
       // edits and re-clone just the affected thumb(s), debounced. Ignore
       // the data-deck-* / data-screen-label / data-om-validate attributes
@@ -1250,6 +1272,11 @@
         resize.addEventListener('pointercancel', up);
       });
 
+      // Hover-to-peek trigger — see .rail-hover-zone above.
+      const hoverZone = document.createElement('div');
+      hoverZone.className = 'rail-hover-zone export-hidden';
+      hoverZone.setAttribute('data-omelette-chrome', '');
+
       // Delete-confirm dialog — mirrors the SPA's ConfirmDialog layout.
       const confirm = document.createElement('div');
       confirm.className = 'confirm-backdrop export-hidden';
@@ -1287,13 +1314,14 @@
         this._focusCurrentThumb();
       });
 
-      this._root.append(style, rail, resize, stage, overlay, menu, confirm);
+      this._root.append(style, rail, resize, hoverZone, stage, overlay, menu, confirm);
       this._canvas = canvas;
       this._stage = stage;
       this._slot = slot;
       this._overlay = overlay;
       this._rail = rail;
       this._resize = resize;
+      this._railHoverZone = hoverZone;
       this._menu = menu;
       this._confirm = confirm;
       this._countEl = overlay.querySelector('.current');
@@ -1703,6 +1731,30 @@
         this._railAnimTimer = setTimeout(() => this.removeAttribute('data-rail-anim'), 220);
       }
       if (d && d.type === '__omelette_rail_enabled') this._enableRail();
+    }
+
+    /** Hover-to-peek: an edge strip plus the rail itself both arm a peek
+     *  open on pointerenter and disarm it (with a short grace delay, so
+     *  crossing the gap between strip and rail doesn't flicker) on
+     *  pointerleave. Independent of _railVisible — never touches
+     *  localStorage or the pinned-open preference. */
+    _setupRailHoverPeek() {
+      if (this._railHoverPeekReady || !this._rail || !this._railHoverZone) return;
+      this._railHoverPeekReady = true;
+      const open = () => {
+        clearTimeout(this._railHoverPeekTimer);
+        this._rail.setAttribute('data-hover-peek', '');
+      };
+      const scheduleClose = () => {
+        clearTimeout(this._railHoverPeekTimer);
+        this._railHoverPeekTimer = setTimeout(() => {
+          this._rail.removeAttribute('data-hover-peek');
+        }, 220);
+      };
+      for (const el of [this._railHoverZone, this._rail]) {
+        el.addEventListener('pointerenter', open);
+        el.addEventListener('pointerleave', scheduleClose);
+      }
     }
 
     _syncRailHidden() {

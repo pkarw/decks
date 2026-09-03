@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="./support.js"></script>
+<script src="../shared/support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="./image-slot.js"></script>
+<script src="../shared/image-slot.js"></script>
 <style>
 html,body{margin:0;background:#08080A}
 a{color:var(--acc,#D8FB63);text-decoration:none}
@@ -26,7 +26,7 @@ a:hover{color:#fff}
 </style>
 </helmet>
 <div style="--acc:{{ accent }};background:#08080A;width:100%;height:100%">
-<x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" hint-size="100%,100%">
+<x-import component-from-global-scope="deck-stage" from="../shared/deck-stage.js" width="1920" height="1080" hint-size="100%,100%">
 
 <section data-label="Cover" data-screen-label="01" data-speaker-notes="Hi — Piotr, founder & CTO of Open Mercato. Twenty minutes on how we keep a million-line ERP codebase moving around the clock with agents." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative">
   <div style="position:absolute;inset:0;background:radial-gradient(1100px 620px at 12% -10%, rgba(216,251,99,.10), transparent 65%);pointer-events:none" data-anim="fade"></div>

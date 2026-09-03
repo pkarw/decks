@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open Mercato Decks</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--acc:#D8FB63;--bg:#08080A;--card:#0D0D10;--line:rgba(255,255,255,.08);--fg:#FAFAFA;--fg-dim:#9A9AA2}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--fg);font-family:Geist,system-ui,sans-serif}
+  body{min-height:100vh;display:flex;flex-direction:column;padding:80px 104px}
+  header{display:flex;flex-direction:column;gap:16px;margin-bottom:64px}
+  .kicker{font:500 15px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc)}
+  h1{margin:0;font:600 56px/1.05 Geist,system-ui,sans-serif;letter-spacing:-.03em}
+  p.lede{margin:0;font:400 20px/1.5 Geist,system-ui,sans-serif;color:var(--fg-dim);max-width:640px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px}
+  a.card{display:flex;flex-direction:column;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px;text-decoration:none;color:inherit;transition:border-color .15s ease,transform .15s ease}
+  a.card:hover{border-color:var(--acc);transform:translateY(-2px)}
+  .card img{width:100%;border-radius:10px;border:1px solid var(--line);aspect-ratio:16/9;object-fit:cover;background:#000}
+  .card .tag{font:500 13px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-dim)}
+  .card h2{margin:0;font:600 26px/1.2 Geist,system-ui,sans-serif;letter-spacing:-.01em}
+  .card p{margin:0;font:400 16px/1.5 Geist,system-ui,sans-serif;color:var(--fg-dim)}
+  footer{margin-top:auto;padding-top:64px;font:400 14px/1 'Geist Mono',monospace;color:#5A5A62}
+</style>
+</head>
+<body>
+  <header>
+    <span class="kicker">// Open Mercato</span>
+    <h1>Decks</h1>
+    <p class="lede">Talks and reusable slide kits, built as self-contained design canvases.</p>
+  </header>
+
+  <div class="grid">
+    <a class="card" href="decks/closing-the-agentic-loop.dc.html">
+      <img src="decks/closing-the-agentic-loop.thumbnail.webp" alt="Closing the Agentic Loop cover slide">
+      <span class="tag">Talk · Agent Conf</span>
+      <h2>Closing the Agentic Loop</h2>
+      <p>How we keep a 1M+ line ERP codebase moving 24/7.</p>
+    </a>
+
+    <a class="card" href="decks/open-mercato-slide-kit.dc.html">
+      <span class="tag">Kit · Reference</span>
+      <h2>Open Mercato Slide Kit</h2>
+      <p>Blank layouts and a token sheet for building new decks.</p>
+    </a>
+  </div>
+
+  <footer>github.com/pkarw/agentsh_deck</footer>
+</body>
+</html>
