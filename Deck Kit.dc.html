@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+html,body{margin:0;background:#08080A}
+a{color:#D8FB63;text-decoration:none}
+a:hover{color:#fff}
+@keyframes omRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes omFade{from{opacity:0}to{opacity:1}}
+@keyframes omBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:no-preference){
+[data-deck-active] [data-anim="rise"]{animation:omRise .6s cubic-bezier(.16,.84,.3,1) both}
+[data-deck-active] [data-anim="fade"]{animation:omFade .8s ease both}
+[data-deck-active] [data-anim="bar"]{animation:omBar .7s cubic-bezier(.16,.84,.3,1) both;transform-origin:left center}
+}
+</style>
+</helmet>
+<x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" hint-size="100%,100%">
+
+<section data-label="Tokens" data-speaker-notes="Reference sheet — copy these literals into new slides." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:40px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D8FB63">Kit — tokens</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <h2 style="margin:0;font:600 84px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">The system, on one page.</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;flex:1;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#75757D">Palette</span>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden"><div style="height:96px;background:#08080A"></div><div style="padding:16px;font:400 20px/1.4 'Geist Mono',monospace;color:#8B8B93">#08080A<br>canvas</div></div>
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden"><div style="height:96px;background:#0D0D10"></div><div style="padding:16px;font:400 20px/1.4 'Geist Mono',monospace;color:#8B8B93">#0D0D10<br>panel</div></div>
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden"><div style="height:96px;background:#D8FB63"></div><div style="padding:16px;font:400 20px/1.4 'Geist Mono',monospace;color:#8B8B93">#D8FB63<br>accent</div></div>
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden"><div style="height:96px;background:#FAFAFA"></div><div style="padding:16px;font:400 20px/1.4 'Geist Mono',monospace;color:#8B8B93">#FAFAFA<br>text</div></div>
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden"><div style="height:96px;background:#8B8B93"></div><div style="padding:16px;font:400 20px/1.4 'Geist Mono',monospace;color:#8B8B93">#8B8B93<br>muted</div></div>
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden"><div style="height:96px;background:#5A5A62"></div><div style="padding:16px;font:400 20px/1.4 'Geist Mono',monospace;color:#8B8B93">#5A5A62<br>dim</div></div>
+      </div>
+      <span style="font:400 24px/1.5 Geist,system-ui,sans-serif;color:#75757D">Borders <span style="font-family:'Geist Mono',monospace;color:#D7D7DE">rgba(255,255,255,.08)</span> · radius 12 / 16 / 18 · slide padding <span style="font-family:'Geist Mono',monospace;color:#D7D7DE">80px 104px</span> · grid gap 18–20px.</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#75757D">Type — Geist &amp; Geist Mono</span>
+      <div style="display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(255,255,255,.08);padding-top:20px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:24px"><span style="font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">Slide title</span><span style="font:400 20px/1 'Geist Mono',monospace;color:#5A5A62">92 / 600 / -.04em</span></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:24px"><span style="font:500 46px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.025em">Row headline</span><span style="font:400 20px/1 'Geist Mono',monospace;color:#5A5A62">46 / 500</span></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:24px"><span style="font:400 32px/1.4 Geist,system-ui,sans-serif;color:#B4B4BC">Body copy, 32px, never smaller than 24.</span><span style="font:400 20px/1 'Geist Mono',monospace;color:#5A5A62">32 / 400</span></div>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:24px"><span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D8FB63">Section label</span><span style="font:400 20px/1 'Geist Mono',monospace;color:#5A5A62">19 mono / .18em</span></div>
+      </div>
+      <span style="font:400 24px/1.5 Geist,system-ui,sans-serif;color:#75757D;margin-top:auto">Motion: <span style="font-family:'Geist Mono',monospace;color:#D7D7DE">data-anim="rise|fade|bar"</span> on any element — plays only on the active slide, freezes for print.</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="Layout — Cover" data-speaker-notes="Cover: label, two-line title, rule, one-line subtitle, speaker block." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative">
+  <div style="position:absolute;inset:0;background:radial-gradient(1100px 620px at 12% -10%, rgba(216,251,99,.10), transparent 65%);pointer-events:none"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;position:relative">
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:38px">
+    <span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">event logo</span>
+  </div>
+  <div style="position:relative;display:flex;flex-direction:column;gap:34px">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D8FB63" data-anim="rise">// Topic label</span>
+    <h1 style="margin:0;font:600 148px/0.94 Geist,system-ui,sans-serif;letter-spacing:-.045em" data-anim="rise">Talk title<br>goes here</h1>
+    <div style="height:1px;background:linear-gradient(90deg,#D8FB63,rgba(255,255,255,.06));max-width:900px" data-anim="bar"></div>
+    <p style="margin:0;font:400 36px/1.3 Geist,system-ui,sans-serif;color:#9A9AA2;max-width:1180px" data-anim="rise">One line that says why anyone should care</p>
+  </div>
+  <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between" data-anim="rise">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font:500 32px/1.2 Geist,system-ui,sans-serif">Speaker Name</span>
+      <span style="font:400 24px/1.2 'Geist Mono',monospace;color:#6E6E76">Role, Company</span>
+    </div>
+    <span style="font:400 22px/1.2 'Geist Mono',monospace;color:#5A5A62;letter-spacing:.06em">City / Month Year</span>
+  </div>
+</section>
+
+<section data-label="Layout — Statement" data-speaker-notes="One idea. Use for the pivot moment of a talk." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:48px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D8FB63">00 — Statement</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:40px">
+    <h2 style="margin:0;font:600 124px/0.98 Geist,system-ui,sans-serif;letter-spacing:-.045em;max-width:1500px" data-anim="rise">A sentence they<br>will <span style="color:#D8FB63">repeat</span> later.</h2>
+    <p style="margin:0;font:400 34px/1.4 Geist,system-ui,sans-serif;color:#8B8B93;max-width:1100px" data-anim="rise">Optional support line — cut it if the statement stands alone.</p>
+  </div>
+</section>
+
+<section data-label="Layout — Stats + list" data-speaker-notes="Dense workhorse: argument left, numbers right." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:52px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D8FB63">00 — Stats</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Claim with numbers.</h2>
+  <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:64px;flex:1;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:26px">
+      <p style="margin:0;font:400 32px/1.45 Geist,system-ui,sans-serif;color:#B4B4BC;max-width:820px" data-anim="rise">Two or three sentences of argument. Keep it to what you'd actually say out loud.</p>
+      <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:26px 30px;display:flex;align-items:center;gap:16px" data-anim="rise">
+        <span style="font:500 26px/1 'Geist Mono',monospace;color:#D8FB63">$</span>
+        <span style="font:400 26px/1 'Geist Mono',monospace;color:#EDEDF0">npx some-command --flag</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px" data-anim="rise">
+      <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:30px 28px;display:flex;flex-direction:column;gap:10px"><span style="font:600 62px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">1M+</span><span style="font:400 21px/1.3 'Geist Mono',monospace;color:#75757D">metric label</span></div>
+      <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:30px 28px;display:flex;flex-direction:column;gap:10px"><span style="font:600 62px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em;color:#D8FB63">2 wks</span><span style="font:400 21px/1.3 'Geist Mono',monospace;color:#75757D">metric label</span></div>
+      <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:30px 28px;display:flex;flex-direction:column;gap:10px"><span style="font:600 62px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">140</span><span style="font:400 21px/1.3 'Geist Mono',monospace;color:#75757D">metric label</span></div>
+      <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:30px 28px;display:flex;flex-direction:column;gap:10px"><span style="font:600 62px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">12+</span><span style="font:400 21px/1.3 'Geist Mono',monospace;color:#75757D">metric label</span></div>
+    </div>
+  </div>
+</section>
+
+<section data-label="Layout — Numbered rows" data-speaker-notes="Agenda, takeaways, or an ordered argument." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:56px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D8FB63">00 — Rows</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Four things.</h2>
+  <div style="display:flex;flex-direction:column;flex:1;min-height:0;border-top:1px solid rgba(255,255,255,.08)">
+    <div style="display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:40px;padding:34px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise"><span style="font:400 26px/1 'Geist Mono',monospace;color:#D8FB63">001</span><span style="font:500 46px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.025em">Row headline</span><span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">tag</span></div>
+    <div style="display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:40px;padding:34px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise"><span style="font:400 26px/1 'Geist Mono',monospace;color:#D8FB63">002</span><span style="font:500 46px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.025em">Row headline</span><span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">tag</span></div>
+    <div style="display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:40px;padding:34px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise"><span style="font:400 26px/1 'Geist Mono',monospace;color:#D8FB63">003</span><span style="font:500 46px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.025em">Row headline</span><span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">tag</span></div>
+    <div style="display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:40px;padding:34px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise"><span style="font:400 26px/1 'Geist Mono',monospace;color:#D8FB63">004</span><span style="font:500 46px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.025em">Row headline</span><span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">tag</span></div>
+  </div>
+</section>
+
+<section data-label="Layout — Card grid" data-speaker-notes="Four peers: features, skills, phases." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D8FB63">00 — Grid</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Parts of one thing.</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;min-height:0">
+    <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 36px;display:flex;flex-direction:column;gap:14px" data-anim="rise"><span style="font:500 32px/1.2 'Geist Mono',monospace;color:#D8FB63">item-one</span><span style="font:400 26px/1.4 Geist,system-ui,sans-serif;color:#9A9AA2">One sentence on what it does.</span></div>
+    <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 36px;display:flex;flex-direction:column;gap:14px" data-anim="rise"><span style="font:500 32px/1.2 'Geist Mono',monospace;color:#D8FB63">item-two</span><span style="font:400 26px/1.4 Geist,system-ui,sans-serif;color:#9A9AA2">One sentence on what it does.</span></div>
+    <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 36px;display:flex;flex-direction:column;gap:14px" data-anim="rise"><span style="font:500 32px/1.2 'Geist Mono',monospace;color:#D8FB63">item-three</span><span style="font:400 26px/1.4 Geist,system-ui,sans-serif;color:#9A9AA2">One sentence on what it does.</span></div>
+    <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 36px;display:flex;flex-direction:column;gap:14px" data-anim="rise"><span style="font:500 32px/1.2 'Geist Mono',monospace;color:#D8FB63">item-four</span><span style="font:400 26px/1.4 Geist,system-ui,sans-serif;color:#9A9AA2">One sentence on what it does.</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:28px;background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:26px 32px" data-anim="rise"><span style="font:500 28px/1 'Geist Mono',monospace">Punchline.</span><span style="font:400 28px/1 'Geist Mono',monospace;color:#75757D">Optional kicker bar.</span></div>
+</section>
+
+<section data-label="Layout — Timeline" data-speaker-notes="Five steps of a journey; rule animates across." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:56px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D8FB63">00 — Timeline</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:60px">
+    <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">How we got here.</h2>
+    <p style="margin:0;font:400 28px/1.4 Geist,system-ui,sans-serif;color:#75757D;max-width:560px">One line framing the arc.</p>
+  </div>
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:34px">
+    <div style="height:1px;background:linear-gradient(90deg,rgba(255,255,255,.10),#D8FB63)" data-anim="bar"></div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:22px">
+      <div style="display:flex;flex-direction:column;gap:18px" data-anim="rise"><span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">step 01</span><span style="font:500 40px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">Step</span><span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#75757D">What changed.</span></div>
+      <div style="display:flex;flex-direction:column;gap:18px" data-anim="rise"><span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">step 02</span><span style="font:500 40px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">Step</span><span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#75757D">What changed.</span></div>
+      <div style="display:flex;flex-direction:column;gap:18px" data-anim="rise"><span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">step 03</span><span style="font:500 40px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em;color:#D8FB63">Step</span><span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#75757D">What changed.</span></div>
+      <div style="display:flex;flex-direction:column;gap:18px" data-anim="rise"><span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">step 04</span><span style="font:500 40px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">Step</span><span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#75757D">What changed.</span></div>
+      <div style="display:flex;flex-direction:column;gap:18px" data-anim="rise"><span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">step 05</span><span style="font:500 40px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">Step</span><span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#75757D">What changed.</span></div>
+    </div>
+  </div>
+</section>
+
+<section data-label="Layout — Before / after" data-speaker-notes="Two panels with an arrow; the right one is accented." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:48px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D8FB63">00 — Shift</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">From this, to that.</h2>
+  <div style="display:grid;grid-template-columns:1fr 88px 1fr;gap:20px;flex:1;min-height:0">
+    <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:44px;display:flex;flex-direction:column;gap:22px" data-anim="rise"><span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#75757D">Before</span><span style="font:500 34px/1.2 'Geist Mono',monospace;color:#EDEDF0">old-approach</span><p style="margin:0;font:400 27px/1.45 Geist,system-ui,sans-serif;color:#8B8B93">Why it stopped working.</p></div>
+    <div style="display:flex;align-items:center;justify-content:center;font:400 48px/1 'Geist Mono',monospace;color:#D8FB63" data-anim="fade">→</div>
+    <div style="background:linear-gradient(180deg,rgba(216,251,99,.07),rgba(216,251,99,0));border:1px solid rgba(216,251,99,.28);border-radius:18px;padding:44px;display:flex;flex-direction:column;gap:22px" data-anim="rise"><span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#D8FB63">After</span><span style="font:500 34px/1.2 'Geist Mono',monospace;color:#FAFAFA">new-approach</span><p style="margin:0;font:400 27px/1.45 Geist,system-ui,sans-serif;color:#B4B4BC">What it unlocked.</p></div>
+  </div>
+</section>
+
+<section data-label="Layout — Screenshot" data-speaker-notes="Copy left, product screenshot right — drop an image straight onto the slot." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:40px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D8FB63">00 — Product</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1.1fr;gap:64px;flex:1;min-height:0;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:30px">
+      <h2 style="margin:0;font:600 88px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Show the thing.</h2>
+      <p style="margin:0;font:400 30px/1.45 Geist,system-ui,sans-serif;color:#B4B4BC;max-width:720px" data-anim="rise">Two sentences of context, then get out of the way of the screenshot.</p>
+      <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:26px 30px;display:flex;align-items:center;gap:16px" data-anim="rise"><span style="font:500 26px/1 'Geist Mono',monospace;color:#D8FB63">$</span><span style="font:400 26px/1 'Geist Mono',monospace;color:#EDEDF0">npx the-tool</span></div>
+    </div>
+    <div style="position:relative;height:100%;min-height:0;display:flex;flex-direction:column;gap:14px" data-anim="fade">
+      <div style="position:relative;flex:1;min-height:0;border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden;background:#0D0D10"><image-slot id="kit-shot" shape="rect" placeholder="Drop a product screenshot"></image-slot></div>
+      <span style="font:400 20px/1.4 'Geist Mono',monospace;color:#5A5A62">caption / source</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="Layout — Quote + metrics" data-speaker-notes="Quote bar plus a four-up metric strip and a highlight band." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D8FB63">00 — Evidence</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-left:3px solid #D8FB63;border-radius:14px;padding:34px 38px;font:400 34px/1.35 'Geist Mono',monospace;color:#EDEDF0" data-anim="rise">“A short quote, verbatim, with attribution below.”</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px" data-anim="rise">
+    <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 32px;display:flex;flex-direction:column;gap:12px"><span style="font:500 24px/1 'Geist Mono',monospace;color:#D8FB63">check</span><span style="font:600 54px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">value</span></div>
+    <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 32px;display:flex;flex-direction:column;gap:12px"><span style="font:500 24px/1 'Geist Mono',monospace;color:#D8FB63">check</span><span style="font:600 54px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">value</span></div>
+    <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 32px;display:flex;flex-direction:column;gap:12px"><span style="font:500 24px/1 'Geist Mono',monospace;color:#D8FB63">check</span><span style="font:600 54px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">value</span></div>
+    <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 32px;display:flex;flex-direction:column;gap:12px"><span style="font:500 24px/1 'Geist Mono',monospace;color:#D8FB63">check</span><span style="font:600 54px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">value</span></div>
+  </div>
+  <div style="flex:1;min-height:0;display:flex;align-items:center;background:linear-gradient(90deg,rgba(216,251,99,.07),rgba(216,251,99,0));border:1px solid rgba(216,251,99,.25);border-radius:18px;padding:40px 46px;gap:44px" data-anim="rise">
+    <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#D8FB63;flex:none">Takeaway</span>
+    <p style="margin:0;font:500 42px/1.25 Geist,system-ui,sans-serif;letter-spacing:-.03em">The one conclusion the numbers support.</p>
+  </div>
+</section>
+
+<section data-label="Layout — Closing" data-speaker-notes="Thanks slide: big word, rule, link grid, contact." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative">
+  <div style="position:absolute;inset:0;background:radial-gradient(1000px 560px at 88% 108%, rgba(216,251,99,.10), transparent 65%);pointer-events:none"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;position:relative">
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:34px">
+    <span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">event logo</span>
+  </div>
+  <div style="position:relative;display:flex;flex-direction:column;gap:44px">
+    <h2 style="margin:0;font:600 156px/0.95 Geist,system-ui,sans-serif;letter-spacing:-.05em" data-anim="rise">Thanks.</h2>
+    <div style="height:1px;background:linear-gradient(90deg,#D8FB63,rgba(255,255,255,.06));max-width:1000px" data-anim="bar"></div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 56px" data-anim="rise">
+      <span style="font:400 28px/1.3 'Geist Mono',monospace;display:flex;gap:18px;align-items:baseline;white-space:nowrap"><span style="color:#5A5A62;font-size:22px;white-space:nowrap;flex:none">repo</span>github.com/org/repo</span>
+      <span style="font:400 28px/1.3 'Geist Mono',monospace;display:flex;gap:18px;align-items:baseline;white-space:nowrap"><span style="color:#5A5A62;font-size:22px;white-space:nowrap;flex:none">docs</span>docs.example.com</span>
+      <span style="font:400 28px/1.3 'Geist Mono',monospace;display:flex;gap:18px;align-items:baseline;white-space:nowrap"><span style="color:#5A5A62;font-size:22px;white-space:nowrap;flex:none">slides</span>example.com/talk</span>
+      <span style="font:400 28px/1.3 'Geist Mono',monospace;display:flex;gap:18px;align-items:baseline;white-space:nowrap"><span style="color:#5A5A62;font-size:22px;white-space:nowrap;flex:none">mail</span>you@example.com</span>
+    </div>
+  </div>
+  <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:40px" data-anim="rise">
+    <div style="display:flex;flex-direction:column;gap:8px"><span style="font:500 32px/1.2 Geist,system-ui,sans-serif">Speaker Name</span><span style="font:400 24px/1.2 'Geist Mono',monospace;color:#6E6E76">linkedin.com/in/handle</span></div>
+    <span style="font:400 22px/1.2 'Geist Mono',monospace;color:#5A5A62;letter-spacing:.06em">Tagline.</span>
+  </div>
+</section>
+
+</x-import>
+
+</x-dc>
+</body>
+</html>
