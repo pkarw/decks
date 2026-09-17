@@ -12,6 +12,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="../shared/image-slot.js"></script>
 <script src="../shared/cover-wave.js"></script>
+<script>
+(() => {
+  const selector = 'video[data-slide-autoplay]';
+  const playVideo = (video) => {
+    const startAt = Number(video.dataset.startAt || 0);
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute('muted', '');
+    if (video.currentTime < startAt) video.currentTime = startAt;
+    const play = () => video.play().catch(() => {});
+    if (video.readyState >= 2) play();
+    else video.addEventListener('canplay', play, { once: true });
+  };
+
+  document.addEventListener('slidechange', (event) => {
+    document.querySelectorAll(selector).forEach((video) => {
+      if (event.detail?.slide?.contains(video)) playVideo(video);
+      else video.pause();
+    });
+  });
+
+  window.addEventListener('load', () => {
+    document.querySelectorAll('[data-deck-active] video[data-slide-autoplay]').forEach(playVideo);
+  });
+})();
+</script>
 <style>
 html,body{margin:0;background:#08080A}
 a{color:var(--acc,#D8FB63);text-decoration:none}
@@ -98,32 +124,36 @@ a:hover{color:#fff}
   </div>
 </section>
 
-<section data-label="Agenda" data-screen-label="03" data-speaker-notes="Four things: fire-and-forget autonomous coding at scale, the safety nets, how to build a harness for unknown use cases, and what's next." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:56px;overflow:hidden">
+<section data-label="Agenda" data-screen-label="03" data-speaker-notes="Four things: fire-and-forget autonomous coding at scale, the safety nets, how to build a harness for unknown use cases, and what's next." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:40px;overflow:hidden">
   <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
     <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#D8FB63)">02 — Agenda</span>
     <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
   </div>
   <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Next 20 minutes.</h2>
-  <div style="display:flex;flex-direction:column;flex:1;min-height:0;border-top:1px solid rgba(255,255,255,.08)">
-    <div style="display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:40px;padding:34px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise">
-      <span style="font:400 26px/1 'Geist Mono',monospace;color:var(--acc,#D8FB63)">001</span>
-      <span style="font:500 46px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.025em">Fire-and-forget at scale — autonomous coding</span>
-      <span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">om-auto-*</span>
+  <div style="display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:52px;align-items:center;flex:1;min-height:0">
+    <div style="display:flex;flex-direction:column;min-height:0;border-top:1px solid rgba(255,255,255,.08)">
+      <div style="display:grid;grid-template-columns:74px 1fr;align-items:center;gap:22px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise">
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:var(--acc,#D8FB63)">001</span>
+        <span style="font:500 34px/1.12 Geist,system-ui,sans-serif;letter-spacing:-.025em">Fire-and-forget at scale</span>
+      </div>
+      <div style="display:grid;grid-template-columns:74px 1fr;align-items:center;gap:22px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise" >
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:var(--acc,#D8FB63)">002</span>
+        <span style="font:500 34px/1.12 Geist,system-ui,sans-serif;letter-spacing:-.025em">Safety nets — review &amp; QA</span>
+      </div>
+      <div style="display:grid;grid-template-columns:74px 1fr;align-items:center;gap:22px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise" >
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:var(--acc,#D8FB63)">003</span>
+        <span style="font:500 34px/1.12 Geist,system-ui,sans-serif;letter-spacing:-.025em">A harness for the unknown</span>
+      </div>
+      <div style="display:grid;grid-template-columns:74px 1fr;align-items:center;gap:22px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise" >
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:var(--acc,#D8FB63)">004</span>
+        <span style="font:500 34px/1.12 Geist,system-ui,sans-serif;letter-spacing:-.025em">What we are building next</span>
+      </div>
     </div>
-    <div style="display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:40px;padding:34px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise" >
-      <span style="font:400 26px/1 'Geist Mono',monospace;color:var(--acc,#D8FB63)">002</span>
-      <span style="font:500 46px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.025em">Safety nets — code review &amp; QA automation</span>
-      <span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">CI</span>
-    </div>
-    <div style="display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:40px;padding:34px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise" >
-      <span style="font:400 26px/1 'Geist Mono',monospace;color:var(--acc,#D8FB63)">003</span>
-      <span style="font:500 46px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.025em">A harness &amp; skills for the unknown use case</span>
-      <span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">context</span>
-    </div>
-    <div style="display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:40px;padding:34px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise" >
-      <span style="font:400 26px/1 'Geist Mono',monospace;color:var(--acc,#D8FB63)">004</span>
-      <span style="font:500 46px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.025em">What we are working on next</span>
-      <span style="font:400 22px/1 'Geist Mono',monospace;color:#5A5A62">next</span>
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0" data-anim="fade">
+      <div style="aspect-ratio:16/9;border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.35)">
+        <video src="../shared/assets/cezar-faster-x10-web.mp4" data-slide-autoplay data-start-at="10" autoplay loop muted playsinline preload="auto" aria-label="Cezar orchestrating parallel coding agents" style="display:block;width:100%;height:100%;object-fit:contain"></video>
+      </div>
+      <span style="font:400 20px/1.4 'Geist Mono',monospace;color:#5A5A62">Cezar · parallel coding agents in motion</span>
     </div>
   </div>
 </section>
@@ -439,9 +469,9 @@ a:hover{color:#fff}
       </div>
       <p style="margin:0;font:400 26px/1.45 Geist,system-ui,sans-serif;color:#75757D;max-width:720px" data-anim="rise" >It runs on my VPS. I coordinate tasks from my phone all day — and because of how the skills work, the interface I use most is GitHub itself.</p>
     </div>
-    <div style="position:relative;height:100%;min-height:0;display:flex;flex-direction:column;gap:14px" data-anim="fade" >
-      <div style="position:relative;flex:1;min-height:0;border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden;background:#0D0D10">
-        <img src="../shared/assets/cezar-dashboard.jpg" alt="Cezar task dashboard" style="width:100%;height:100%;object-fit:cover;object-position:left top">
+    <div style="position:relative;align-self:center;width:100%;min-height:0;display:flex;flex-direction:column;gap:14px" data-anim="fade" >
+      <div style="position:relative;aspect-ratio:16/9;border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.35)">
+        <video src="../shared/assets/cezar-x5-web.mp4" data-slide-autoplay data-start-at="10" autoplay loop muted playsinline preload="auto" aria-label="Cezar task dashboard in action" style="display:block;width:100%;height:100%;object-fit:contain"></video>
       </div>
       <span style="font:400 20px/1.4 'Geist Mono',monospace;color:#5A5A62">github.com/open-mercato/cezar</span>
     </div>
@@ -608,19 +638,20 @@ a:hover{color:#fff}
   </div>
 </section>
 
-<section data-label="What's next" data-screen-label="19" data-speaker-notes="Next: browser sandboxes — VS Code, Codex and Claude with Cezar and skills for safe dev. And OM Model 0.1, a fine-tuned Qwen aiming to beat plain Luna and Sonnet on Open Mercato tasks." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
+<section data-label="What's next" data-screen-label="19" data-speaker-notes="Next: Open Mercato Cloud browser sandboxes — VS Code, Codex and Claude with Cezar and skills for safe dev. Try it at openmercatocloud.com. And OM Model 0.1, a fine-tuned Qwen aiming to beat plain Luna and Sonnet on Open Mercato tasks." style="background:#08080A;color:#FAFAFA;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
   <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
     <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#D8FB63)">18 — Next</span>
     <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
   </div>
   <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">What's next?</h2>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;min-height:0">
-    <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:40px 42px;display:flex;flex-direction:column;gap:22px;min-height:0" data-anim="rise">
+    <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:32px 34px;display:flex;flex-direction:column;gap:16px;min-height:0" data-anim="rise">
       <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#D8FB63)">01 — Sandboxes</span>
-      <span style="font:500 48px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">VS Code, Codex and Claude in the browser</span>
-      <span style="font:400 26px/1.45 Geist,system-ui,sans-serif;color:#8B8B93">Open Mercato, Next.js and plain React apps — Codex, Claude and VS Code, all in one browser session.</span>
+      <span style="font:500 42px/1.08 Geist,system-ui,sans-serif;letter-spacing:-.03em">VS Code, Codex and Claude in the browser</span>
+      <span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#8B8B93">Open Mercato, Next.js and plain React apps — all in one browser session.</span>
+      <a href="https://openmercatocloud.com" target="_blank" rel="noopener noreferrer" style="font:500 22px/1 'Geist Mono',monospace;color:#0A0A0C;background:var(--acc,#D8FB63);border-radius:999px;padding:15px 20px;width:fit-content;display:inline-flex;align-items:center;gap:12px">openmercatocloud.com <span aria-hidden="true">↗</span></a>
       <div style="position:relative;flex:1;min-height:0;border:1px solid rgba(255,255,255,.10);border-radius:14px;overflow:hidden">
-        <img src="../shared/assets/sandbox-browser-ide.jpg" alt="Browser-based sandbox running Claude Code and VS Code" style="width:100%;height:100%;object-fit:cover;object-position:left top">
+        <iframe src="https://www.youtube-nocookie.com/embed/Ne9FmJkZdUc?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=Ne9FmJkZdUc&amp;controls=0&amp;playsinline=1&amp;rel=0&amp;modestbranding=1" title="Open Mercato Cloud browser sandbox demo" allow="autoplay; encrypted-media; picture-in-picture" loading="eager" style="display:block;width:100%;height:100%;border:0;pointer-events:none"></iframe>
       </div>
     </div>
     <div style="background:#0D0D10;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:40px 42px;display:flex;flex-direction:column;gap:22px" data-anim="rise" >
