@@ -4,6 +4,12 @@
   "private": true,
   "description": "Open Mercato deck kit and talks",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build:cloudflare": "node scripts/build-cloudflare.mjs",
+    "upload:media": "node scripts/upload-media.mjs",
+    "deploy": "npm run upload:media && npm run build:cloudflare && npx wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.3"
   }
 }
