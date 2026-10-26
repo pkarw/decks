@@ -6,7 +6,7 @@ English speaker notes for a 30-minute keynote. Opening slides follow Piotr’s n
 
 ## 01. It's time to Build
 
-It's time to Build. Piotr Karwatka, entrepreneur and investor, co-founder of Open Mercato and Catch the Tornado. Made in Wrocław, VC Demo Day, 27 October 2026, 11:15–11:45.
+It's time to Build. Piotr Karwatka, entrepreneur and investor, co-founder of Open Mercato and Catch the Tornado. Made in Wrocław, VC Demo Day, 27 October 2026, 11:15–11:45. Visual direction and original Made in Wroclaw artwork: https://made-in-wroclaw.pl/vc-demo-day/. Logo: https://made-in-wroclaw.pl/wp-content/uploads/2024/06/miw_logo.png. Key visual: https://made-in-wroclaw.pl/wp-content/uploads/2026/09/Group-101en.png.
 
 ## 02. I like to build
 
