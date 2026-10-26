@@ -19,11 +19,11 @@ Click a title or screenshot to open its HTML presentation. Serve the files over 
 
 | Preview | Deck | About |
 | --- | --- | --- |
-| [<img src="decks/its-time-to-build.thumbnail.jpg" alt="It's time to Buidl cover" width="320">](decks/its-time-to-build.dc.html) | [It's time to Buidl](decks/its-time-to-build.dc.html) | Made in Wrocław VC Demo Day keynote, 27 October 2026, 11:15–11:45. Building with AI, customer demand, capital efficiency and lessons from the portfolio. 25 slides in English. |
-| [<img src="decks/closing-the-agentic-loop.thumbnail.webp" alt="Closing the Agentic Loop cover" width="320">](decks/closing-the-agentic-loop.dc.html) | [Closing the Agentic Loop](decks/closing-the-agentic-loop.dc.html) | Agent Conf talk about autonomous coding agents, review and QA in Open Mercato. |
-| [<img src="decks/open-mercato-slide-kit.thumbnail.jpg" alt="Open Mercato Slide Kit token sheet" width="320">](decks/open-mercato-slide-kit.dc.html) | [Open Mercato Slide Kit](decks/open-mercato-slide-kit.dc.html) | Reusable layouts, typography and design tokens for new decks. |
-| [<img src="decks/alphalist-cto-ai-engineering-webinar/thumbnail.jpg" alt="Alphalist CTO webinar cover" width="320">](decks/alphalist-cto-ai-engineering-webinar/index.html) | [Alphalist CTO AI Engineering Webinar](decks/alphalist-cto-ai-engineering-webinar/index.html) | Agentic coding at scale, adapted for a CTO audience. |
-| [<img src="decks/ai-tech-leaders-live-webinar/thumbnail.jpg" alt="AI Tech Leaders webinar cover" width="320">](decks/ai-tech-leaders-live-webinar/index.html) | [AI Tech Leaders Live Webinar](decks/ai-tech-leaders-live-webinar/index.html) | AI engineering practices and workflows from the AI Tech Leaders program. |
+| [<img src="decks/its-time-to-build.thumbnail.jpg" alt="It's time to Build cover" width="320">](https://pkarw-decks.openmercatocloud.com/decks/its-time-to-build.dc.html) | [It's time to Build](https://pkarw-decks.openmercatocloud.com/decks/its-time-to-build.dc.html) | Made in Wrocław VC Demo Day keynote, 27 October 2026, 11:15–11:45. Building with AI, customer demand, capital efficiency and lessons from the portfolio. 25 slides in English. |
+| [<img src="decks/closing-the-agentic-loop.thumbnail.webp" alt="Closing the Agentic Loop cover" width="320">](https://pkarw-decks.openmercatocloud.com/decks/closing-the-agentic-loop.dc.html) | [Closing the Agentic Loop](https://pkarw-decks.openmercatocloud.com/decks/closing-the-agentic-loop.dc.html) | Agent Conf talk about autonomous coding agents, review and QA in Open Mercato. |
+| [<img src="decks/open-mercato-slide-kit.thumbnail.jpg" alt="Open Mercato Slide Kit token sheet" width="320">](https://pkarw-decks.openmercatocloud.com/decks/open-mercato-slide-kit.dc.html) | [Open Mercato Slide Kit](https://pkarw-decks.openmercatocloud.com/decks/open-mercato-slide-kit.dc.html) | Reusable layouts, typography and design tokens for new decks. |
+| [<img src="decks/alphalist-cto-ai-engineering-webinar/thumbnail.jpg" alt="Alphalist CTO webinar cover" width="320">](https://pkarw-decks.openmercatocloud.com/decks/alphalist-cto-ai-engineering-webinar/index.html) | [Alphalist CTO AI Engineering Webinar](https://pkarw-decks.openmercatocloud.com/decks/alphalist-cto-ai-engineering-webinar/index.html) | Agentic coding at scale, adapted for a CTO audience. |
+| [<img src="decks/ai-tech-leaders-live-webinar/thumbnail.jpg" alt="AI Tech Leaders webinar cover" width="320">](https://pkarw-decks.openmercatocloud.com/decks/ai-tech-leaders-live-webinar/index.html) | [AI Tech Leaders Live Webinar](https://pkarw-decks.openmercatocloud.com/decks/ai-tech-leaders-live-webinar/index.html) | AI engineering practices and workflows from the AI Tech Leaders program. |
 
 ## Running locally
 
@@ -71,14 +71,14 @@ After editing a cover, refresh its thumbnail and use the same screenshot in `ind
 
 Speaker-note files:
 
-- [It's time to Buidl](notes/its-time-to-build-talk-notes.md)
+- [It's time to Build](notes/its-time-to-build-talk-notes.md)
 - [Closing the Agentic Loop](notes/closing-the-agentic-loop-talk-notes.md)
 
 ## Publishing
 
 Production: [pkarw-decks.openmercatocloud.com](https://pkarw-decks.openmercatocloud.com).
 
-Push updates to `main` in [pkarw/decks](https://github.com/pkarw/decks) to trigger the connected Cloudflare deployment. GitHub is the normal publishing path.
+The source repository is [pkarw/decks](https://github.com/pkarw/decks). Publishing uses the manual Cloudflare command below. A push to GitHub alone does not currently deploy the site.
 
 To check the static packaging locally:
 
