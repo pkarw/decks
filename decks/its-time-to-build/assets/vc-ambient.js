@@ -36,29 +36,33 @@
       float t = u_time;
       vec3 pink = vec3(1.0, 0.255, 0.4);
       vec3 violet = vec3(0.39, 0.22, 0.78);
-      float colorMix = 0.5 + 0.5 * sin(p.x * 4.0 - t * 0.075);
-      vec3 color = mix(pink, violet, colorMix * 0.72);
+      float colorMix = 0.5 + 0.5 * sin(p.x * 4.0 - t * 0.40);
+      vec3 color = mix(pink, violet, colorMix * 0.82);
 
-      // Slow, narrow ribbons stay in the empty top and bottom margins.
-      float top = 0.964 + 0.003 * sin(p.x * 7.0 + t * 0.11);
-      float bottom = 0.036 + 0.003 * sin(p.x * 6.0 - t * 0.10);
-      float fade = smoothstep(0.02, 0.20, p.x)
-                 * (1.0 - smoothstep(0.82, 0.98, p.x));
-      float travel = 0.60 + 0.40 * sin(p.x * 5.0 - t * 0.18);
-      float edge = glow(p.y - top, 0.0012)
-                 + glow(p.y - bottom, 0.0012);
-      float halo = glow(p.y - top, 0.026)
-                 + glow(p.y - bottom, 0.026);
-      float alpha = fade * (edge * 0.11 + halo * 0.028)
-                  * (0.65 + travel * 0.35);
+      // Visible moving light packets follow two gently undulating edge ribbons.
+      float top = 0.960 + 0.009 * sin(p.x * 8.0 + t * 0.65);
+      float bottom = 0.040 + 0.009 * sin(p.x * 7.0 - t * 0.58);
+      float fade = smoothstep(0.01, 0.10, p.x)
+                 * (1.0 - smoothstep(0.90, 0.99, p.x));
+      float topPacket = glow(p.x - (fract(t * 0.10) * 1.4 - 0.2), 0.13);
+      float bottomPacket = glow(p.x - (1.2 - fract(t * 0.085) * 1.4), 0.16);
+      float topEdge = glow(p.y - top, 0.0020);
+      float bottomEdge = glow(p.y - bottom, 0.0020);
+      float topHalo = glow(p.y - top, 0.032);
+      float bottomHalo = glow(p.y - bottom, 0.032);
+      float alpha = fade * (
+          topEdge * (0.18 + topPacket * 0.48)
+        + bottomEdge * (0.18 + bottomPacket * 0.48)
+        + topHalo * (0.045 + topPacket * 0.15)
+        + bottomHalo * (0.045 + bottomPacket * 0.15));
 
-      // A broader, very soft field accompanies the event artwork on the cover.
-      float ribbonX = 0.78 + 0.065 * sin(p.y * 4.5 + t * 0.065);
-      float coverGlow = glow(p.x - ribbonX, 0.13)
-                      * smoothstep(0.08, 0.30, p.y)
+      // Broader moving light is visible beside the cover artwork.
+      float ribbonX = 0.78 + 0.14 * sin(p.y * 4.5 + t * 0.38);
+      float coverGlow = glow(p.x - ribbonX, 0.15)
+                      * smoothstep(0.08, 0.25, p.y)
                       * (1.0 - smoothstep(0.78, 0.96, p.y));
-      alpha += u_cover * coverGlow * 0.10;
-      gl_FragColor = vec4(color, min(alpha, 0.15));
+      alpha += u_cover * coverGlow * (0.22 + 0.07 * sin(t * 0.55));
+      gl_FragColor = vec4(color, min(alpha, 0.68));
     }
   `;
 
