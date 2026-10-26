@@ -5,31 +5,25 @@
 <h1 align="center">Open Mercato Decks</h1>
 
 <p align="center">
-  Conference talks and reusable slide kits from the team building an enterprise app framework<br>
-  100% with AI — no build step, no bundler, just HTML that presents itself.
+  Conference talks, webinars and a reusable slide kit by Piotr Karwatka and the Open Mercato team.<br>
+  HTML presentations with local previews and Cloudflare hosting.
 </p>
 
----
+<p align="center">
+  <a href="https://pkarw-decks.openmercatocloud.com">Browse the live deck library</a>
+</p>
 
-## What's inside
+## Decks
 
-Every deck is a single self-contained [Claude Design](https://claude.ai) canvas (`.dc.html`) — open it in a browser and it boots its own slide viewer, complete with keyboard navigation, a thumbnail rail, speaker notes and presenter mode.
+Click a title or screenshot to open its HTML presentation. Serve the files over HTTP using the local server below.
 
-| Deck | What it is |
-| --- | --- |
-| [`closing-the-agentic-loop.dc.html`](decks/closing-the-agentic-loop.dc.html) | The Agent Conf talk — how Open Mercato keeps a 1M+ line ERP codebase moving 24/7 with autonomous coding agents |
-| [`open-mercato-slide-kit.dc.html`](decks/open-mercato-slide-kit.dc.html) | The reusable layout kit and design-token sheet every new deck starts from |
-| [`alphalist-cto-ai-engineering-webinar/`](decks/alphalist-cto-ai-engineering-webinar/index.html) | Optional — the Alphalist CTO AI Engineering webinar deck (standalone HTML, own assets) |
-| [`ai-tech-leaders-live-webinar/`](decks/ai-tech-leaders-live-webinar/index.html) | Optional — the AI Tech Leaders live webinar deck (standalone HTML, own assets) |
-
-```
-decks/     the .dc.html decks + the talk's thumbnail
-shared/    deck-stage.js (viewer), image-slot.js (drop targets), support.js (runtime), assets/ (screenshots)
-notes/     speaker notes and narrative drafts a deck was built from
-index.html landing page listing the decks
-server.js  zero-dependency static file server for local use
-cloudflare/ Cloudflare Worker serving the site and R2 video files
-```
+| Preview | Deck | About |
+| --- | --- | --- |
+| [<img src="decks/its-time-to-build.thumbnail.jpg" alt="It's time to Buidl cover" width="320">](decks/its-time-to-build.dc.html) | [It's time to Buidl](decks/its-time-to-build.dc.html) | Made in Wrocław VC Demo Day keynote, 27 October 2026, 11:15–11:45. Building with AI, customer demand, capital efficiency and lessons from the portfolio. 25 slides in English. |
+| [<img src="decks/closing-the-agentic-loop.thumbnail.webp" alt="Closing the Agentic Loop cover" width="320">](decks/closing-the-agentic-loop.dc.html) | [Closing the Agentic Loop](decks/closing-the-agentic-loop.dc.html) | Agent Conf talk about autonomous coding agents, review and QA in Open Mercato. |
+| [<img src="decks/open-mercato-slide-kit.thumbnail.jpg" alt="Open Mercato Slide Kit token sheet" width="320">](decks/open-mercato-slide-kit.dc.html) | [Open Mercato Slide Kit](decks/open-mercato-slide-kit.dc.html) | Reusable layouts, typography and design tokens for new decks. |
+| [<img src="decks/alphalist-cto-ai-engineering-webinar/thumbnail.jpg" alt="Alphalist CTO webinar cover" width="320">](decks/alphalist-cto-ai-engineering-webinar/index.html) | [Alphalist CTO AI Engineering Webinar](decks/alphalist-cto-ai-engineering-webinar/index.html) | Agentic coding at scale, adapted for a CTO audience. |
+| [<img src="decks/ai-tech-leaders-live-webinar/thumbnail.jpg" alt="AI Tech Leaders webinar cover" width="320">](decks/ai-tech-leaders-live-webinar/index.html) | [AI Tech Leaders Live Webinar](decks/ai-tech-leaders-live-webinar/index.html) | AI engineering practices and workflows from the AI Tech Leaders program. |
 
 ## Running locally
 
@@ -37,41 +31,77 @@ cloudflare/ Cloudflare Worker serving the site and R2 video files
 npm start
 ```
 
-This serves the repo root on `http://localhost:3000` (or `$PORT`). Open `/` for the landing page, or jump straight into a deck:
+The zero-dependency server serves the repository on `http://localhost:3000`. If that port is busy, use another port:
 
+```bash
+PORT=3100 npm start
+```
+
+Open `/` for the deck list, or go directly to a presentation:
+
+- `/decks/its-time-to-build.dc.html`
 - `/decks/closing-the-agentic-loop.dc.html`
 - `/decks/open-mercato-slide-kit.dc.html`
 - `/decks/alphalist-cto-ai-engineering-webinar/`
 - `/decks/ai-tech-leaders-live-webinar/`
 
-A deck **must** be served over HTTP — opening a `.dc.html` file directly via `file://` breaks it, since the runtime fetches its own source to compile the template and loads React from a CDN.
+The `.dc.html` decks fetch their own source and load their viewer dependencies over HTTP. Opening them with `file://` will not work. Fonts and some runtime dependencies also require internet access.
 
-## Deploying to Cloudflare
+The shared slide viewer supports arrow keys and Space to advance, R to reset, a thumbnail rail revealed at the left edge, speaker notes and printing. The two standalone webinar decks have their own viewers.
 
-The production site is served entirely by Cloudflare at **https://pkarw-decks.openmercatocloud.com**. Workers Static Assets hosts the HTML, scripts and images. The original MP4 demos are stored in the private `pkarw-decks-media` R2 bucket and streamed by the Worker at their existing URLs, with support for byte ranges and seeking.
+## Repository layout
+
+```text
+decks/       Presentations, thumbnails and deck-specific assets
+shared/      Shared viewer, runtime, screenshots and demo recordings
+notes/       English speaker notes and talk narratives
+index.html   Deck library with screenshot previews
+server.js    Local static server
+scripts/     Cloudflare packaging and R2 media upload
+cloudflare/  Worker serving static assets and video files
+```
+
+## Editing a deck
+
+The `.dc.html` presentations contain sibling `<section data-label="...">` elements inside an `<x-import component-from-global-scope="deck-stage" ...>` block. Each section is one slide. Its `data-speaker-notes` attribute stores the notes for that slide.
+
+Use `decks/open-mercato-slide-kit.dc.html` for layout and style references: dark background `#08080A`, accent `#D8FB63`, and Geist / Geist Mono typography. The standalone webinar decks keep their markup and assets in their own directories.
+
+After editing a cover, refresh its thumbnail and use the same screenshot in `index.html` and this README. Keep screenshot paths relative so they work both on GitHub and in local previews.
+
+Speaker-note files:
+
+- [It's time to Buidl](notes/its-time-to-build-talk-notes.md)
+- [Closing the Agentic Loop](notes/closing-the-agentic-loop-talk-notes.md)
+
+## Publishing
+
+Production: [pkarw-decks.openmercatocloud.com](https://pkarw-decks.openmercatocloud.com).
+
+Push updates to `main` in [pkarw/decks](https://github.com/pkarw/decks) to trigger the connected Cloudflare deployment. GitHub is the normal publishing path.
+
+To check the static packaging locally:
 
 ```bash
 npm ci
+npm run build:cloudflare
+```
+
+The build copies the landing page, decks, shared assets and notes into `.cloudflare/public`. It excludes MP4 files and rejects static files larger than 25 MiB. The `.dc.html` filenames stay intact because the runtime fetches the original filename.
+
+Cloudflare Workers Static Assets serves HTML, scripts and images. The `pkarw-decks-media` R2 bucket holds MP4 recordings, which the Worker streams at their original paths with byte-range support. New or changed recordings need an R2 upload through `npm run upload:media` with Cloudflare authentication.
+
+For a manual deployment when needed:
+
+```bash
 npx wrangler login
 npm run deploy
 ```
 
-`npm run deploy` uploads videos to R2, prepares the public files in `.cloudflare/public`, then deploys the Worker and its custom domain using `wrangler.jsonc`. For the first deployment to a new account, create the bucket with `npx wrangler r2 bucket create pkarw-decks-media` and update the account ID and custom domain in that configuration.
-
-Only the landing page, decks, shared assets and speaker notes are included in the static upload. The `.dc.html` filenames are preserved because the deck runtime fetches its own source. Railway is no longer used for production hosting.
-
-## Editing a deck
-
-Slides live as sibling `<section data-label="...">` elements inside the `<x-import component-from-global-scope="deck-stage" ...>` block. Each section is one slide — inline-styled, matching the token sheet in `open-mercato-slide-kit.dc.html` (dark background `#08080A`, accent `#D8FB63`, Geist / Geist Mono type).
-
-The slide viewer's thumbnail rail is hidden by default and peeks open on hover of the left edge — it never pins itself open or pushes the slide content over.
-
-## Speaker notes
-
-`notes/closing-the-agentic-loop-talk-notes.md` holds the narrative draft the deck was built from — useful when rehearsing or updating slide copy.
+`npm run deploy` uploads media to R2, prepares the static files and deploys the Worker using `wrangler.jsonc`.
 
 ---
 
 <p align="center">
-  <sub>Built by <a href="https://github.com/open-mercato">Open Mercato</a> — an open-source enterprise app framework, written entirely by AI agents.</sub>
+  <sub>Built by <a href="https://github.com/open-mercato">Open Mercato</a>.</sub>
 </p>

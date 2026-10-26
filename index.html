@@ -18,7 +18,7 @@
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px}
   a.card{display:flex;flex-direction:column;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:32px;text-decoration:none;color:inherit;transition:border-color .15s ease,transform .15s ease}
   a.card:hover{border-color:var(--acc);transform:translateY(-2px)}
-  .card img{width:100%;border-radius:10px;border:1px solid var(--line);aspect-ratio:16/9;object-fit:cover;background:#000}
+  .card img{width:100%;height:auto;border-radius:10px;border:1px solid var(--line);aspect-ratio:16/9;object-fit:cover;background:#000}
   .card .tag{font:500 13px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-dim)}
   .card h2{margin:0;font:600 26px/1.2 Geist,system-ui,sans-serif;letter-spacing:-.01em}
   .card p{margin:0;font:400 16px/1.5 Geist,system-ui,sans-serif;color:var(--fg-dim)}
@@ -29,10 +29,16 @@
   <header>
     <span class="kicker">// Open Mercato</span>
     <h1>Decks</h1>
-    <p class="lede">Talks and reusable slide kits, built as self-contained design canvases.</p>
+    <p class="lede">Conference talks, webinars and a reusable slide kit from Open Mercato.</p>
   </header>
 
   <div class="grid">
+    <a class="card" href="decks/its-time-to-build.dc.html">
+      <img src="decks/its-time-to-build.thumbnail.jpg" alt="It’s time to Buidl title slide" width="1212" height="682" loading="lazy">
+      <span class="tag">Keynote · Made in Wrocław · 27 October 2026</span>
+      <h2>It's time to Buidl</h2>
+      <p>Piotr Karwatka on AI engineering, building companies and investing. VC Demo Day, 11:15–11:45.</p>
+    </a>
     <a class="card" href="decks/closing-the-agentic-loop.dc.html">
       <img src="decks/closing-the-agentic-loop.thumbnail.webp" alt="Closing the Agentic Loop cover slide">
       <span class="tag">Talk · Agent Conf</span>
@@ -41,24 +47,27 @@
     </a>
 
     <a class="card" href="decks/open-mercato-slide-kit.dc.html">
+      <img src="decks/open-mercato-slide-kit.thumbnail.jpg" alt="Open Mercato Slide Kit token sheet" width="1212" height="682" loading="lazy">
       <span class="tag">Kit · Reference</span>
       <h2>Open Mercato Slide Kit</h2>
       <p>Blank layouts and a token sheet for building new decks.</p>
     </a>
 
     <a class="card" href="decks/alphalist-cto-ai-engineering-webinar/">
+      <img src="decks/alphalist-cto-ai-engineering-webinar/thumbnail.jpg" alt="Alphalist CTO AI Engineering Webinar cover slide" width="1212" height="682" loading="lazy">
       <span class="tag">Webinar · Optional</span>
       <h2>Alphalist CTO AI Engineering Webinar</h2>
       <p>Agentic coding at scale, adapted for the Alphalist CTO webinar audience.</p>
     </a>
 
     <a class="card" href="decks/ai-tech-leaders-live-webinar/">
+      <img src="decks/ai-tech-leaders-live-webinar/thumbnail.jpg" alt="AI Tech Leaders Live Webinar cover slide" width="1212" height="682" loading="lazy">
       <span class="tag">Webinar · Optional</span>
       <h2>AI Tech Leaders Live Webinar</h2>
       <p>Agentic coding at scale, adapted for the AI Tech Leaders live webinar.</p>
     </a>
   </div>
 
-  <footer>github.com/pkarw/agentsh_deck</footer>
+  <footer>github.com/pkarw/decks</footer>
 </body>
 </html>
