@@ -149,7 +149,7 @@ Running these `om-auto-` skills is cool, but when you run 20 of them, parallel i
 That's why we developed `cezar`. You definitely should try it (MIT) - ultimate parallel coding orchestrator with native skills + Github support.
 
 ```markdown
-npx cezar-cli
+npx cezar-run
 ```
 
 I use it on my VPS server + mobile to coordinate tasks all day long.
