@@ -6,8 +6,26 @@
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
   const thumbnail=new URLSearchParams(location.search).has('_snthumb');
   let instance=0;
-  const rows=7,columnsPerStage=5,step=11,cellSize=8;
+  const rows=7,columnsPerStage=6,step=9,cellSize=7;
   const palette=[[57,70,25],[89,108,35],[133,153,49],[188,206,77],[221,231,111]];
+  const message='Start with 80% done';
+  const font={
+    S:['01111','10000','10000','01110','00001','00001','11110'],
+    t:['00100','00100','11111','00100','00100','00101','00010'],
+    a:['00000','00000','01110','00001','01111','10001','01111'],
+    r:['00000','00000','10110','11001','10000','10000','10000'],
+    w:['00000','00000','10001','10001','10101','10101','01010'],
+    i:['00100','00000','01100','00100','00100','00100','01110'],
+    h:['10000','10000','10110','11001','10001','10001','10001'],
+    '8':['01110','10001','10001','01110','10001','10001','01110'],
+    '0':['01110','10001','10011','10101','11001','10001','01110'],
+    '%':['11001','11010','00100','00100','01000','10110','00110'],
+    d:['00001','00001','01101','10011','10001','10001','01111'],
+    o:['00000','00000','01110','10001','10001','10001','01110'],
+    n:['00000','00000','10110','11001','10001','10001','10001'],
+    e:['00000','00000','01110','10001','11111','10000','01111'],
+    ' ':['000','000','000','000','000','000','000'],
+  };
   const clamp=v=>Math.max(0,Math.min(1,v));
   const mix=(a,b,p)=>a+(b-a)*p;
 
@@ -40,6 +58,17 @@
     const fluidContext=fluid.getContext('2d');
     let fluidPixels=null;
     const total=slides.length,columns=total*columnsPerStage,totalCells=columns*rows;
+    const glyphs=Array.from(message).map(char=>font[char]);
+    const textWidth=glyphs.reduce((sum,glyph)=>sum+glyph[0].length+1,0)-1;
+    const messageCells=Array.from({length:rows},()=>Array(columns).fill(false));
+    let pen=Math.floor((columns-textWidth)/2);
+    for(const glyph of glyphs){
+      glyph.forEach((line,row)=>Array.from(line).forEach((bit,col)=>{
+        if(bit==='1'&&pen+col>=0&&pen+col<columns)messageCells[row][pen+col]=true;
+      }));
+      pen+=glyph[0].length+1;
+    }
+    canvas.dataset.message=message;
     let width=1712,height=96,clock=0,last=0,raf=0,current=-1,fill=0,target=0,caption='';
     let reported=-1,begun=false,endingStarted=null,fillRate=27;
 
@@ -98,11 +127,11 @@
 
     function draw() {
       ctx.clearRect(0,0,width,height);
-      const gridWidth=columns*step-3,gridX=width-gridWidth,gridY=21;
+      const gridWidth=columns*step-2,gridX=width-gridWidth,gridY=25;
       const animation=(motion.matches||thumbnail)?0:clock;
       if(begun&&current===total-1&&fill>=target-.001&&endingStarted===null)endingStarted=clock;
       const melt=endingStarted===null||motion.matches||thumbnail?0:
-        clamp((clock-endingStarted-1.1)/2.6);
+        clamp((clock-endingStarted-3.3)/2.6);
       canvas.dataset.endingPhase=melt===0?'contributions':melt<1?'melting':'liquid';
       const filled=Math.floor(fill),scanX=gridX+gridWidth-fill/rows*step;
       ctx.strokeStyle='rgba(255,255,255,.075)';ctx.lineWidth=1;
@@ -122,10 +151,12 @@
         let x=gridX+col*step,y=gridY+row*step;
         const seed=(col*37+row*61)%101;
         if(order<filled) {
-          const base=palette[seed%palette.length];
+          const letter=messageCells[row][col];
+          const base=letter?[220,236,136]:palette[seed%palette.length].map(v=>v*.2);
           // Every filled cell has its own smooth, unsynchronised brightness pulse.
-          const pulse=.78+.22*Math.sin(animation*(1.15+(seed%7)*.12)+seed*1.73);
-          const flash=clamp(1-(fill-order)/14)*.22;
+          const pulse=letter ? .86+.14*Math.sin(animation*1.35+seed*1.73):
+            .78+.22*Math.sin(animation*(1.15+(seed%7)*.12)+seed*1.73);
+          const flash=clamp(1-(fill-order)/14)*.12;
           ctx.fillStyle=`rgb(${base.map(v=>Math.round(Math.min(255,v*pulse+flash*100))).join(',')})`;
         }else {
           const activeBand=Math.floor((totalCells-1-order)/(rows*columnsPerStage))===total-1-current;
