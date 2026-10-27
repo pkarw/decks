@@ -19,6 +19,7 @@ Click a title or screenshot to open its HTML presentation. Serve the files over 
 
 | Preview | Deck | About |
 | --- | --- | --- |
+| [<img src="decks/ai-coding-summit-nyc/thumbnail.jpg" alt="Closing the Agentic Loop — AI Coding Summit NYC cover" width="320">](https://pkarw-decks.openmercatocloud.com/decks/closing-the-agentic-loop-ai-coding-summit-nyc.dc.html) | [Closing the Agentic Loop — AI Coding Summit NYC](https://pkarw-decks.openmercatocloud.com/decks/closing-the-agentic-loop-ai-coding-summit-nyc.dc.html) | November 2026, New York. How We Keep a ~~1.1~~ 1.8M-Line Codebase Moving 24/7. Conference branding and animated orbital loops. |
 | [<img src="decks/its-time-to-build.thumbnail.jpg" alt="It's time to Build cover" width="320">](https://pkarw-decks.openmercatocloud.com/decks/its-time-to-build.dc.html) | [It's time to Build](https://pkarw-decks.openmercatocloud.com/decks/its-time-to-build.dc.html) | Made in Wrocław VC Demo Day keynote, 27 October 2026, 11:15–11:45. Building with AI, customer demand, capital efficiency and lessons from the portfolio. 25 slides in English. |
 | [<img src="decks/closing-the-agentic-loop.thumbnail.webp" alt="Closing the Agentic Loop cover" width="320">](https://pkarw-decks.openmercatocloud.com/decks/closing-the-agentic-loop.dc.html) | [Closing the Agentic Loop](https://pkarw-decks.openmercatocloud.com/decks/closing-the-agentic-loop.dc.html) | Agent Conf talk about autonomous coding agents, review and QA in Open Mercato. |
 | [<img src="decks/open-mercato-slide-kit.thumbnail.jpg" alt="Open Mercato Slide Kit token sheet" width="320">](https://pkarw-decks.openmercatocloud.com/decks/open-mercato-slide-kit.dc.html) | [Open Mercato Slide Kit](https://pkarw-decks.openmercatocloud.com/decks/open-mercato-slide-kit.dc.html) | Reusable layouts, typography and design tokens for new decks. |
@@ -39,6 +40,7 @@ PORT=3100 npm start
 
 Open `/` for the deck list, or go directly to a presentation:
 
+- `/decks/closing-the-agentic-loop-ai-coding-summit-nyc.dc.html`
 - `/decks/its-time-to-build.dc.html`
 - `/decks/closing-the-agentic-loop.dc.html`
 - `/decks/open-mercato-slide-kit.dc.html`
@@ -73,6 +75,9 @@ Speaker-note files:
 
 - [It's time to Build](notes/its-time-to-build-talk-notes.md)
 - [Closing the Agentic Loop](notes/closing-the-agentic-loop-talk-notes.md)
+- [Closing the Agentic Loop — AI Coding Summit NYC](notes/closing-the-agentic-loop-ai-coding-summit-nyc-talk-notes.md)
+
+The AI Coding Summit NYC edition uses the official [conference logo and palette](https://aicodingsummit.com/nyc/): yellow `#FAFF05`, black and white. The donut contains an animated, extruded 3D Cezar mark, built from the [official logo geometry](https://github.com/open-mercato/cezar/blob/main/docs/brand/cezar-mark-white.svg). Its logo and cover animation live in `decks/ai-coding-summit-nyc/`. The animation pauses on other slides and when the tab is hidden, and respects reduced motion.
 
 ## Publishing
 

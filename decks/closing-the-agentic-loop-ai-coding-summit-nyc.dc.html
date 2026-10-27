@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Closing the Agentic Loop — AI Coding Summit NYC 2026</title>
+<meta name="description" content="Closing the Agentic Loop: How We Keep a 1.8M-Line Codebase Moving 24/7. Piotr Karwatka at AI Coding Summit NYC, November 2026.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../shared/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="../shared/image-slot.js"></script>
+<script src="ai-coding-summit-nyc/loop-orbit.js"></script>
+<script src="ai-coding-summit-nyc/slide-video.js"></script>
+<style>
+html,body{margin:0;background:#000000}
+a{color:var(--acc,#FAFF05);text-decoration:none}
+a:hover{color:#fff}
+@keyframes omRise{from{opacity:0;transform:translateX(-28px);clip-path:inset(0 100% 0 0)}to{opacity:1;transform:none;clip-path:inset(0)}}
+@keyframes omFade{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+@keyframes omBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:no-preference){
+[data-deck-active] [data-anim="rise"]{animation:omRise .7s cubic-bezier(.16,.84,.3,1) both;animation-delay:var(--d,0s)}
+[data-deck-active] [data-anim="fade"]{animation:omFade .65s ease both;animation-delay:var(--d,0s)}
+[data-deck-active] [data-anim="bar"]{animation:omBar .7s cubic-bezier(.16,.84,.3,1) both;transform-origin:left center;animation-delay:var(--d,0s)}
+}
+
+.summit-logo{display:inline-flex;align-items:center;padding:16px 22px;background:#FAFF05;flex:none}
+.summit-logo img{display:block;width:228px;height:auto}
+.previous-size{color:#999999;text-decoration-color:#FAFF05;text-decoration-thickness:3px}
+.current-size{margin-left:.16em;font-weight:600;font-size:1.35em;color:var(--acc,#FAFF05)}
+@media print{[data-loop-orbit]{display:none}}
+</style>
+</helmet>
+<div style="--acc:{{ accent }};background:#000000;width:100%;height:100%">
+<x-import component-from-global-scope="deck-stage" from="../shared/deck-stage.js" width="1920" height="1080" hint-size="100%,100%">
+
+<section data-label="Cover" data-screen-label="01" data-speaker-notes="Hi — Piotr, founder & CTO of Open Mercato. Twenty minutes on how we keep a 1.8-million-line codebase moving around the clock with agents." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative">
+  <div style="position:absolute;inset:0;background:radial-gradient(1100px 620px at 12% -10%, rgba(250,255,5,.10), transparent 65%);pointer-events:none" data-anim="fade"></div>
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:120px 120px;mask-image:linear-gradient(180deg,#000,transparent 70%);pointer-events:none"></div>
+  <canvas data-loop-orbit aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+  <div style="display:flex;align-items:center;justify-content:space-between;position:relative" data-anim="fade">
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:38px">
+    <a href="https://aicodingsummit.com/nyc/" class="summit-logo" aria-label="AI Coding Summit NYC, November 2026"><img src="ai-coding-summit-nyc/logo.svg" alt="AI Coding Summit" width="190" height="48"></a>
+  </div>
+  <div style="position:relative;display:flex;flex-direction:column;gap:34px">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)" data-anim="rise">Talk // AI Coding Summit NYC</span>
+    <h1 style="margin:0;font:600 148px/0.94 Geist,system-ui,sans-serif;letter-spacing:-.045em;text-wrap:balance;max-width:1120px" data-anim="rise">Closing the<br>Agentic Loop</h1>
+    <div style="height:1px;background:linear-gradient(90deg,var(--acc,#FAFF05),rgba(255,255,255,.06));max-width:900px" data-anim="bar"></div>
+    <p style="margin:0;font:400 36px/1.3 Geist,system-ui,sans-serif;color:#AAAAAA;max-width:1120px;letter-spacing:-.01em" data-anim="rise">How We Keep a <span style="white-space:nowrap"><s class="previous-size">1.1</s> <strong class="current-size">1.8</strong>M-Line</span><br>Codebase Moving 24/7</p>
+  </div>
+  <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:40px" data-anim="rise">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font:500 32px/1.2 Geist,system-ui,sans-serif;letter-spacing:-.02em">Piotr Karwatka</span>
+      <span style="font:400 24px/1.2 'Geist Mono',monospace;color:#999999">Founder &amp; CTO, Open Mercato</span>
+    </div>
+    <span style="font:400 22px/1.2 'Geist Mono',monospace;color:#858585;letter-spacing:.06em">New York / Nov 2026</span>
+  </div>
+</section>
+
+<section data-label="What is Open Mercato" data-screen-label="02" data-speaker-notes="Open source framework for large-scale enterprise apps. Enterprise patterns plus business modules out of the box — you get 80%, agents write the 20% that makes it yours. Retool, but MIT, TypeScript and Next.js. Not a single line written by a human." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:52px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">01 — The framework</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:60px">
+    <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Start with 80% done.</h2>
+    <a href="https://github.com/open-mercato/open-mercato" style="font:400 26px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05);border-bottom:1px solid rgba(250,255,5,.35);padding-bottom:6px" data-anim="fade">github.com/open-mercato/open-mercato</a>
+  </div>
+  <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:64px;align-items:start;flex:1;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:26px">
+      <p style="margin:0;font:400 32px/1.45 Geist,system-ui,sans-serif;color:#BBBBBB;max-width:820px;letter-spacing:-.01em" data-anim="rise" >An open-source enterprise app framework — ERP, CRM, WMS, manufacturing. Enterprise patterns and business domains ship with it; Claude or Codex write the last 20% that makes it fit the business.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px" data-anim="rise" >
+        <span style="font:500 22px/1 'Geist Mono',monospace;color:#DDDDDD;background:#171717;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:14px 20px">TypeScript</span>
+        <span style="font:500 22px/1 'Geist Mono',monospace;color:#DDDDDD;background:#171717;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:14px 20px">Next.js</span>
+        <span style="font:500 22px/1 'Geist Mono',monospace;color:#DDDDDD;background:#171717;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:14px 20px">MIT license</span>
+        <span style="font:500 22px/1 'Geist Mono',monospace;color:#000000;background:var(--acc,#FAFF05);border-radius:999px;padding:14px 20px">Retool, but better</span>
+      </div>
+      <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:26px 30px;display:flex;align-items:center;gap:16px" data-anim="rise" >
+        <span style="font:500 26px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">$</span>
+        <span style="font:400 26px/1 'Geist Mono',monospace;color:#EEEEEE">npx create-mercato-app my-cool-enterprise-app</span>
+      </div>
+      <p style="margin:0;font:400 26px/1.45 Geist,system-ui,sans-serif;color:#999999;max-width:780px">AI engineering at its core: the framework was built 100% with LLMs — and you build apps on it without a single human-written line.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px" data-anim="rise" >
+      <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:30px 28px;display:flex;flex-direction:column;gap:10px">
+        <span style="font:600 62px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em;color:var(--acc,#FAFF05)">1.8M</span>
+        <span style="font:400 21px/1.3 'Geist Mono',monospace;color:#999999">lines of code</span>
+      </div>
+      <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:30px 28px;display:flex;flex-direction:column;gap:10px">
+        <span style="font:600 62px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">2w</span>
+        <span style="font:400 21px/1.3 'Geist Mono',monospace;color:#999999">release cadence<br>300–600 PRs each</span>
+      </div>
+      <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:30px 28px;display:flex;flex-direction:column;gap:10px">
+        <span style="font:600 62px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">140+</span>
+        <span style="font:400 21px/1.3 'Geist Mono',monospace;color:#999999">contributors</span>
+      </div>
+      <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:30px 28px;display:flex;flex-direction:column;gap:10px">
+        <span style="font:600 62px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">12+</span>
+        <span style="font:400 21px/1.3 'Geist Mono',monospace;color:#999999">core team</span>
+      </div>
+      <div style="grid-column:span 2;background:#111111;border:1px dashed rgba(255,255,255,.12);border-radius:16px;padding:26px 28px;font:400 24px/1.4 'Geist Mono',monospace;color:#AAAAAA">…kept KISS: markdowns, <span style="color:#EEEEEE">AGENTS.md</span>, skills, a bunch of scripts.</div>
+    </div>
+  </div>
+</section>
+
+<section data-label="Agenda" data-screen-label="03" data-speaker-notes="Four things: fire-and-forget autonomous coding at scale, the safety nets, how to build a harness for unknown use cases, and what's next." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:40px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">02 — Agenda</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Next 20 minutes.</h2>
+  <div style="display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:52px;align-items:center;flex:1;min-height:0">
+    <div style="display:flex;flex-direction:column;min-height:0;border-top:1px solid rgba(255,255,255,.08)">
+      <div style="display:grid;grid-template-columns:74px 1fr;align-items:center;gap:22px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise">
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">001</span>
+        <span style="font:500 34px/1.12 Geist,system-ui,sans-serif;letter-spacing:-.025em">Fire-and-forget at scale</span>
+      </div>
+      <div style="display:grid;grid-template-columns:74px 1fr;align-items:center;gap:22px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise" >
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">002</span>
+        <span style="font:500 34px/1.12 Geist,system-ui,sans-serif;letter-spacing:-.025em">Safety nets — review &amp; QA</span>
+      </div>
+      <div style="display:grid;grid-template-columns:74px 1fr;align-items:center;gap:22px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise" >
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">003</span>
+        <span style="font:500 34px/1.12 Geist,system-ui,sans-serif;letter-spacing:-.025em">A harness for the unknown</span>
+      </div>
+      <div style="display:grid;grid-template-columns:74px 1fr;align-items:center;gap:22px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.08)" data-anim="rise" >
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">004</span>
+        <span style="font:500 34px/1.12 Geist,system-ui,sans-serif;letter-spacing:-.025em">What we are building next</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0" data-anim="fade">
+      <div style="aspect-ratio:16/9;border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.35)">
+        <video src="../shared/assets/cezar-faster-x10-web.mp4" data-slide-autoplay data-start-at="10" autoplay loop muted playsinline preload="auto" aria-label="Cezar orchestrating parallel coding agents" style="display:block;width:100%;height:100%;object-fit:contain"></video>
+      </div>
+      <span style="font:400 20px/1.4 'Geist Mono',monospace;color:#858585">Cezar · parallel coding agents in motion</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="The basics — skipped" data-screen-label="04" data-speaker-notes="I know, you know. I'm skipping the basics — agents, context, skills, SDD, workflows. We started simple. A thousand PRs later we realised we needed a software factory." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:48px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">03 — Ground rules</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <h2 style="margin:0;font:600 104px/0.98 Geist,system-ui,sans-serif;letter-spacing:-.045em" data-anim="rise">I know. You know.<br><span style="color:#858585">The basics.</span></h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;flex:1;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#858585" data-anim="rise">Not covering</span>
+      <div style="display:flex;flex-direction:column;gap:14px" data-anim="rise" >
+        <span style="font:400 34px/1.3 Geist,system-ui,sans-serif;color:#858585;text-decoration:line-through;text-decoration-color:rgba(250,255,5,.5)">coding agents</span>
+        <span style="font:400 34px/1.3 Geist,system-ui,sans-serif;color:#858585;text-decoration:line-through;text-decoration-color:rgba(250,255,5,.5)">context management</span>
+        <span style="font:400 34px/1.3 Geist,system-ui,sans-serif;color:#858585;text-decoration:line-through;text-decoration-color:rgba(250,255,5,.5)">skills basics</span>
+        <span style="font:400 34px/1.3 Geist,system-ui,sans-serif;color:#858585;text-decoration:line-through;text-decoration-color:rgba(250,255,5,.5)">SDD basics</span>
+        <span style="font:400 34px/1.3 Geist,system-ui,sans-serif;color:#858585;text-decoration:line-through;text-decoration-color:rgba(250,255,5,.5)">workflows</span>
+      </div>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--acc,#FAFF05);border-radius:16px;padding:44px 46px;display:flex;flex-direction:column;gap:18px" data-anim="rise" >
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#FAFF05)">Covering</span>
+      <p style="margin:0;font:500 44px/1.2 Geist,system-ui,sans-serif;letter-spacing:-.03em">We started simple. Around 1K PRs later we knew we needed a <span style="color:var(--acc,#FAFF05)">Software Factory</span> to keep it moving.</p>
+    </div>
+  </div>
+</section>
+
+<section data-label="Keep it simple" data-screen-label="05" data-speaker-notes="AGENTS.md, then spec-driven development — the real game changer. Then skills, then more skills. Then one hackathon produced 300 PRs in a day and we knew: go autonomous." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:56px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">04 — How we got here</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:60px">
+    <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Keep things simple.</h2>
+    <p style="margin:0;font:400 28px/1.4 Geist,system-ui,sans-serif;color:#999999;max-width:560px">Every step was forced by volume, never by fashion.</p>
+  </div>
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:34px">
+    <div style="height:1px;background:linear-gradient(90deg,rgba(255,255,255,.10),var(--acc,#FAFF05))" data-anim="bar"></div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:22px">
+      <div style="display:flex;flex-direction:column;gap:18px" data-anim="rise">
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:#858585">step 01</span>
+        <span style="font:500 40px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">AGENTS.md</span>
+        <span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#999999">One file, shared conventions.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px" data-anim="rise" >
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:#858585">step 02</span>
+        <span style="font:500 40px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">SDD</span>
+        <span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#999999">Spec-driven development. Game changer.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px" data-anim="rise" >
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:#858585">step 03</span>
+        <span style="font:500 40px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">Skills</span>
+        <span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#999999">A few. Then a lot more.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px" data-anim="rise" >
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:#858585">step 04</span>
+        <span style="font:500 40px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">300 PRs / day</span>
+        <span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#999999">One hackathon broke the process.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px" data-anim="rise" >
+        <span style="font:400 22px/1 'Geist Mono',monospace;color:#858585">step 05</span>
+        <span style="font:500 40px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em;color:var(--acc,#FAFF05)">Autonomous</span>
+        <span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#999999">No human in the inner loop.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-label="AGENTS.md" data-screen-label="06" data-speaker-notes="AGENTS.md stays thin. We get the Task Router to work — it links to more precise, per-package instructions first, so agents match the task to a guide before any research or coding starts." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:48px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">05 — AGENTS.md</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:60px">
+    <h2 style="margin:0;font:600 84px/1.02 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">One file.<br>It routes, it doesn't answer.</h2>
+    <p style="margin:0;font:400 27px/1.4 Geist,system-ui,sans-serif;color:#999999;max-width:460px">We get the Task Router to work — links to more precise instructions first.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:56px;flex:1;min-height:0">
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:6px 38px;display:flex;flex-direction:column;min-height:0" data-anim="rise">
+      <div style="display:flex;justify-content:space-between;gap:20px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.08);font:500 21px/1 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#858585"><span>Task</span><span>Guide</span></div>
+      <div style="display:flex;justify-content:space-between;gap:20px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font:400 25px/1.35 Geist,system-ui,sans-serif;color:#BBBBBB;max-width:58%">New module, scaffolding, auto-discovery paths</span><span style="font:400 22px/1.3 'Geist Mono',monospace;color:#DDDDDD;text-align:right;white-space:nowrap">core + module-development.md</span></div>
+      <div style="display:flex;justify-content:space-between;gap:20px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font:400 25px/1.35 Geist,system-ui,sans-serif;color:#BBBBBB;max-width:58%">CRUD API routes, OpenAPI specs</span><span style="font:400 22px/1.3 'Geist Mono',monospace;color:#DDDDDD;text-align:right;white-space:nowrap">core → API Routes</span></div>
+      <div style="display:flex;justify-content:space-between;gap:20px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font:400 25px/1.35 Geist,system-ui,sans-serif;color:#BBBBBB;max-width:58%">In-app notifications, subscriber alerts</span><span style="font:400 22px/1.3 'Geist Mono',monospace;color:#DDDDDD;text-align:right;white-space:nowrap">core → Notifications + ui</span></div>
+      <div style="display:flex;justify-content:space-between;gap:20px;padding:24px 0">
+        <span style="font:400 25px/1.35 Geist,system-ui,sans-serif;color:var(--acc,#FAFF05);max-width:58%">A topic no AGENTS.md covers</span>
+        <span style="font:400 22px/1.3 'Geist Mono',monospace;color:var(--acc,#FAFF05);text-align:right;white-space:nowrap">→ Explore agent</span>
+      </div>
+    </div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:14px;min-height:0" data-anim="fade">
+      <div style="position:relative;flex:1;min-height:0;border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden;background:#111111">
+        <img src="../shared/assets/agents-md-task-router.jpg" alt="AGENTS.md Task Router table" style="width:100%;height:100%;object-fit:cover;object-position:left top">
+      </div>
+      <span style="font:400 20px/1.4 'Geist Mono',monospace;color:#858585">AGENTS.md · repo root</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="SDD" data-screen-label="07" data-speaker-notes="We started with collecting all the specs in .ai/specs, then added the spec-writing skill to make them coherent and project-oriented — same shape every time, readable by the next agent, not just the author." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:48px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">06 — SDD</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <h2 style="margin:0;font:600 88px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Specs, coherent<br>by default.</h2>
+  <div style="display:grid;grid-template-columns:1fr 88px 1fr;align-items:stretch;gap:20px;flex:1;min-height:0">
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:40px 42px;display:flex;flex-direction:column;gap:18px;min-height:0" data-anim="rise">
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#999999">Where we started</span>
+      <span style="font:500 34px/1.2 'Geist Mono',monospace;color:#EEEEEE">.ai/specs/</span>
+      <div style="display:flex;flex-direction:column;gap:8px;font:400 21px/1.3 'Geist Mono',monospace;color:#999999">
+        <span>2026-03-19-checkout-simple-…</span>
+        <span>2026-03-23-inbound-webhook-…</span>
+        <span>2026-03-25-coherent-access-…</span>
+        <span>2026-03-29-sync-excel-custo…</span>
+        <span style="color:#4A4A50">…hundreds more, one shape each</span>
+      </div>
+      <p style="margin:0;font:400 25px/1.42 Geist,system-ui,sans-serif;color:#AAAAAA">Just markdown, dumped flat. Useful — but every author picked their own structure.</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;font:400 48px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)" data-anim="fade">→</div>
+    <div style="background:linear-gradient(180deg,rgba(250,255,5,.07),rgba(250,255,5,0));border:1px solid rgba(250,255,5,.28);border-radius:18px;padding:40px 42px;display:flex;flex-direction:column;gap:18px;min-height:0" data-anim="rise">
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#FAFF05)">Where we went</span>
+      <span style="font:500 34px/1.2 'Geist Mono',monospace;color:#FFFFFF">spec-writing skill</span>
+      <div style="display:flex;flex-direction:column;gap:8px;font:400 21px/1.3 'Geist Mono',monospace;color:#BBBBBB">
+        <span>TL;DR</span>
+        <span>Overview</span>
+        <span>Problem Statement</span>
+        <span style="color:#858585">…same shape, every time</span>
+      </div>
+      <p style="margin:0;font:400 25px/1.42 Geist,system-ui,sans-serif;color:#BBBBBB">Coherent, project-oriented, staff-engineer standard — readable by the next agent, not just the author.</p>
+    </div>
+  </div>
+</section>
+
+<section data-label="Skills are machines" data-screen-label="08" data-speaker-notes="Skills are the machines in the factory. We started interactive: om-code-review, om-spec-writing. Great dopamine, no scale. Then the om-auto-* family." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:48px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">07 — Skills</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:60px">
+    <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Skills are machines<br>in the factory.</h2>
+    <a href="https://github.com/open-mercato/skills" style="font:400 26px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05);border-bottom:1px solid rgba(250,255,5,.35);padding-bottom:6px" data-anim="fade">github.com/open-mercato/skills</a>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 88px 1fr;align-items:stretch;gap:20px;flex:1;min-height:0">
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:38px 40px;display:flex;flex-direction:column;gap:16px;min-height:0" data-anim="rise">
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#999999">Where we started</span>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font:500 32px/1.2 'Geist Mono',monospace;color:#EEEEEE">om-code-review</span>
+        <span style="font:500 32px/1.2 'Geist Mono',monospace;color:#EEEEEE">om-spec-writing</span>
+      </div>
+      <p style="margin:0;font:400 24px/1.4 Geist,system-ui,sans-serif;color:#AAAAAA">Before publishing <span style="color:#DDDDDD;font-family:'Geist Mono',monospace">open-mercato/skills</span>, we went all local — every skill lived in <span style="color:#DDDDDD;font-family:'Geist Mono',monospace">.ai/skills/</span>. Interactive, fun, and it did not scale.</p>
+      <div style="margin-top:auto;display:flex;flex-direction:column;gap:6px;min-height:0" data-anim="rise">
+        <div style="border:1px solid rgba(255,255,255,.10);border-radius:10px;overflow:hidden;height:110px;flex:none">
+          <img src="../shared/assets/skills-local-folder.jpg" alt=".ai/skills local folder before publishing" style="width:100%;height:100%;object-fit:cover;object-position:left top">
+        </div>
+        <span style="font:400 17px/1.3 'Geist Mono',monospace;color:#858585">.ai/skills/ — local, before the public repo</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;font:400 48px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)" data-anim="fade" >→</div>
+    <div style="background:linear-gradient(180deg,rgba(250,255,5,.07),rgba(250,255,5,0));border:1px solid rgba(250,255,5,.28);border-radius:18px;padding:38px 40px;display:flex;flex-direction:column;gap:16px" data-anim="rise" >
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#FAFF05)">Where we went</span>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font:500 32px/1.2 'Geist Mono',monospace;color:#FFFFFF">om-auto-review-pr</span>
+        <span style="font:500 32px/1.2 'Geist Mono',monospace;color:#FFFFFF">om-auto-*</span>
+      </div>
+      <p style="margin:0;font:400 26px/1.42 Geist,system-ui,sans-serif;color:#BBBBBB">Automate the SDLC and keep workflows coherent across the whole team — not just in one terminal.</p>
+    </div>
+  </div>
+</section>
+
+<section data-label="300 PRs a day" data-screen-label="09" data-speaker-notes="We got overwhelmed with the contributions — it was a sign: go autonomous or die. One hackathon weekend produced 300 PRs in a single day; manual review couldn't keep up." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">08 — 300 PRs / day</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:grid;grid-template-columns:1.05fr 1fr;gap:56px;flex:1;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:26px;min-height:0">
+      <h2 style="margin:0;font:600 78px/1.02 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">One hackathon<br>broke the process.</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px" data-anim="rise">
+        <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px 30px;display:flex;flex-direction:column;gap:6px">
+          <span style="font:500 21px/1 'Geist Mono',monospace;color:#999999">open, right now</span>
+          <span style="font:600 80px/1 Geist,system-ui,sans-serif;letter-spacing:-.05em">118</span>
+        </div>
+        <div style="background:linear-gradient(180deg,rgba(250,255,5,.07),rgba(250,255,5,0));border:1px solid rgba(250,255,5,.28);border-radius:16px;padding:28px 30px;display:flex;flex-direction:column;gap:6px">
+          <span style="font:500 21px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">closed all-time</span>
+          <span style="font:600 80px/1 Geist,system-ui,sans-serif;letter-spacing:-.05em;color:var(--acc,#FAFF05)">3,374</span>
+        </div>
+      </div>
+      <div style="flex:1;min-height:0;display:flex;align-items:center;background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:34px 36px" data-anim="rise">
+        <p style="margin:0;font:500 32px/1.35 Geist,system-ui,sans-serif;letter-spacing:-.02em">"We got overwhelmed with the contributions. It was a sign: <span style="color:var(--acc,#FAFF05)">go autonomous or die.</span>"</p>
+      </div>
+    </div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:14px;min-height:0" data-anim="fade">
+      <div style="position:relative;flex:1;min-height:0;border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden;background:#111111">
+        <img src="../shared/assets/pr-volume-300-per-day.jpg" alt="Open Mercato pull requests list" style="width:100%;height:100%;object-fit:cover;object-position:left top">
+      </div>
+      <span style="font:400 20px/1.4 'Geist Mono',monospace;color:#858585">github.com/open-mercato/open-mercato · Pull requests</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="Autonomous skills" data-screen-label="10" data-speaker-notes="The om-auto family goes wild: review, create with Ralph Wiggum loops, spec writing, and QA — agent-browser tests, integration tests, screenshots posted as PR comments, ephemeral testcontainers per run. Fire and forget, next task, repeat." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">09 — Autonomous skills</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise"><span style="font-family:'Geist Mono',monospace;font-size:78px">om-auto-*</span> goes wild.</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;min-height:0">
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 36px;display:flex;flex-direction:column;gap:14px" data-anim="rise">
+      <span style="font:500 32px/1.2 'Geist Mono',monospace;color:var(--acc,#FAFF05)">om-auto-review-pr</span>
+      <span style="font:400 26px/1.4 Geist,system-ui,sans-serif;color:#AAAAAA">Every PR reviewed against CODE_REVIEW.md before a human ever opens it.</span>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 36px;display:flex;flex-direction:column;gap:14px" data-anim="rise" >
+      <span style="font:500 32px/1.2 'Geist Mono',monospace;color:var(--acc,#FAFF05)">om-auto-create-pr</span>
+      <span style="font:400 26px/1.4 Geist,system-ui,sans-serif;color:#AAAAAA">Ralph Wiggum loops: keep going until the checks are green.</span>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 36px;display:flex;flex-direction:column;gap:14px" data-anim="rise" >
+      <span style="font:500 32px/1.2 'Geist Mono',monospace;color:var(--acc,#FAFF05)">om-auto-spec-writing</span>
+      <span style="font:400 26px/1.4 Geist,system-ui,sans-serif;color:#AAAAAA">Specs authored to the same shape the whole factory reads.</span>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 36px;display:flex;flex-direction:column;gap:14px" data-anim="rise" >
+      <span style="font:500 32px/1.2 'Geist Mono',monospace;color:var(--acc,#FAFF05)">om-auto-qa-pr</span>
+      <span style="font:400 26px/1.4 Geist,system-ui,sans-serif;color:#AAAAAA"><span style="font-family:'Geist Mono',monospace;color:#DDDDDD">agent-browser</span> runs the PR, posts test cases, integration results and screenshots as comments — each in its own testcontainers env.</span>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:28px;background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:26px 32px" data-anim="rise" >
+    <span style="font:500 28px/1 'Geist Mono',monospace;color:#FFFFFF">Fire and forget.</span>
+    <span style="font:400 28px/1 'Geist Mono',monospace;color:#999999">Get the next task.</span>
+    <span style="font:400 28px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">Repeat.</span>
+  </div>
+</section>
+
+<section data-label="Comments and labels" data-screen-label="11" data-speaker-notes="Autonomous skills started communicating with us via GitHub Comments and Labels — a QA run posts its test table, screenshots and pass/fail verdicts straight onto the PR instead of a dashboard we'd have to go check." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">10 — Comments &amp; labels</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1.1fr;gap:56px;flex:1;min-height:0;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:26px">
+      <h2 style="margin:0;font:600 80px/1.02 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Skills learned<br>to talk back.</h2>
+      <p style="margin:0;font:400 29px/1.45 Geist,system-ui,sans-serif;color:#BBBBBB;max-width:620px" data-anim="rise">Autonomous skills started communicating with us via <span style="color:#FFFFFF">GitHub Comments</span> and <span style="color:#FFFFFF">Labels</span> — not a dashboard we have to go check.</p>
+      <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:30px 34px;display:flex;flex-direction:column;gap:14px" data-anim="rise">
+        <span style="font:500 23px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">om-auto-qa-pr on #5709</span>
+        <div style="display:flex;flex-direction:column;gap:10px;font:400 23px/1.3 Geist,system-ui,sans-serif;color:#AAAAAA">
+          <span>✅ accept invitation → <span style="font-family:'Geist Mono',monospace;color:#DDDDDD">201</span>, redirects to dashboard</span>
+          <span>✅ reuse a claimed address → clean <span style="font-family:'Geist Mono',monospace;color:#DDDDDD">409</span>, readable message</span>
+          <span>✅ console during the flow → no errors</span>
+        </div>
+      </div>
+    </div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:14px;min-height:0" data-anim="fade">
+      <div style="position:relative;flex:1;min-height:0;border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden;background:#111111">
+        <img src="../shared/assets/qa-pr-comment-5709.jpg" alt="GitHub PR QA comment with pass/fail table and screenshot" style="width:100%;height:100%;object-fit:cover;object-position:left top">
+      </div>
+      <span style="font:400 20px/1.4 'Geist Mono',monospace;color:#858585">github.com/open-mercato/open-mercato · PR #5709</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="Best practices" data-screen-label="12" data-speaker-notes="Worktrees and subagents everywhere. One gh strategy, one labeling strategy, one set of checks — generated by om-setup-agentic-pipeline. Skills are cross-reference-free and split into references and subtasks. Every run writes docs and lessons learned." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">11 — Best practices</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <h2 style="margin:0;font:600 84px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">One pipeline, many agents.</h2>
+  <div style="display:grid;grid-template-columns:1fr 1.05fr;gap:56px;flex:1;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;gap:20px;align-items:flex-start" data-anim="rise">
+        <span style="font:400 22px/1.6 'Geist Mono',monospace;color:var(--acc,#FAFF05)">01</span>
+        <span style="font:400 30px/1.4 Geist,system-ui,sans-serif;color:#BBBBBB">We go wild on <span style="color:#FFFFFF">worktrees</span> and <span style="color:#FFFFFF">subagents</span> — parallel by default.</span>
+      </div>
+      <div style="display:flex;gap:20px;align-items:flex-start" data-anim="rise" >
+        <span style="font:400 22px/1.6 'Geist Mono',monospace;color:var(--acc,#FAFF05)">02</span>
+        <span style="font:400 30px/1.4 Geist,system-ui,sans-serif;color:#BBBBBB">All of them share one <span style="font-family:'Geist Mono',monospace;color:#FFFFFF">gh</span> strategy, one labeling strategy, one set of checks.</span>
+      </div>
+      <div style="display:flex;gap:20px;align-items:flex-start" data-anim="rise" >
+        <span style="font:400 22px/1.6 'Geist Mono',monospace;color:var(--acc,#FAFF05)">03</span>
+        <span style="font:400 30px/1.4 Geist,system-ui,sans-serif;color:#BBBBBB">Skills split into references and subtasks, cross-reference-free, <span style="font-family:'Geist Mono',monospace;color:#FFFFFF">skills.sh</span> compatible.</span>
+      </div>
+      <div style="display:flex;gap:20px;align-items:flex-start" data-anim="rise" >
+        <span style="font:400 22px/1.6 'Geist Mono',monospace;color:var(--acc,#FAFF05)">04</span>
+        <span style="font:400 30px/1.4 Geist,system-ui,sans-serif;color:#BBBBBB">Every run auto-writes <span style="font-family:'Geist Mono',monospace;color:#FFFFFF">.ai/runs</span> and <span style="font-family:'Geist Mono',monospace;color:#FFFFFF">.ai/lessons-learned</span>, and parks QA artifacts per check.</span>
+      </div>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:40px 42px;display:flex;flex-direction:column;gap:24px" data-anim="rise" >
+      <div style="display:flex;align-items:center;gap:16px">
+        <span style="font:500 26px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">/</span>
+        <span style="font:500 30px/1 'Geist Mono',monospace;color:#FFFFFF">om-setup-agentic-pipeline</span>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,.08)"></div>
+      <div style="display:flex;flex-direction:column;gap:16px;font:400 27px/1 'Geist Mono',monospace;color:#AAAAAA">
+        <span style="color:#EEEEEE">agentic.config.json</span>
+        <span>SDLC.md</span>
+        <span>CODE_REVIEW.md</span>
+        <span>BACKWARD_COMPATIBILITY.md</span>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,.08)"></div>
+      <span style="font:400 24px/1.45 Geist,system-ui,sans-serif;color:#999999">Four files that make twenty parallel agents behave like one team.</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="Cezar" data-speaker-notes="Twenty om-auto runs in parallel stops being fun. So we built Cezar — MIT, parallel coding orchestrator with native skills and GitHub support. I run it on a VPS and drive it from my phone; the interface I actually use is GitHub." data-screen-label="13" style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:40px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">12 — Orchestration</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1.1fr;gap:64px;flex:1;min-height:0;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:30px">
+      <h2 style="margin:0;font:600 88px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Divide and conquer<br>with <span style="color:var(--acc,#FAFF05)">Cezar</span>.</h2>
+      <p style="margin:0;font:400 30px/1.45 Geist,system-ui,sans-serif;color:#BBBBBB;max-width:720px" data-anim="rise" >Running <span style="font-family:'Geist Mono',monospace;color:#FFFFFF">om-auto-*</span> is cool. Running twenty in parallel is not. Cezar is our parallel coding orchestrator — MIT, native skills, GitHub-first.</p>
+      <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:26px 30px;display:flex;align-items:center;gap:16px" data-anim="rise" >
+        <span style="font:500 26px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">$</span>
+        <span style="font:400 26px/1 'Geist Mono',monospace;color:#EEEEEE">npx cezar-cli</span>
+      </div>
+      <p style="margin:0;font:400 26px/1.45 Geist,system-ui,sans-serif;color:#999999;max-width:720px" data-anim="rise" >It runs on my VPS. I coordinate tasks from my phone all day — and because of how the skills work, the interface I use most is GitHub itself.</p>
+    </div>
+    <div style="position:relative;align-self:center;width:100%;min-height:0;display:flex;flex-direction:column;gap:14px" data-anim="fade" >
+      <div style="position:relative;aspect-ratio:16/9;border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.35)">
+        <video src="../shared/assets/cezar-x5-web.mp4" data-slide-autoplay data-start-at="10" autoplay loop muted playsinline preload="auto" aria-label="Cezar task dashboard in action" style="display:block;width:100%;height:100%;object-fit:contain"></video>
+      </div>
+      <span style="font:400 20px/1.4 'Geist Mono',monospace;color:#858585">github.com/open-mercato/cezar</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="Safety net" data-screen-label="14" data-speaker-notes="Uncle Bob says stop reviewing manually — but you need a safety net. Ours is GitHub CI: build, lint, 12K unit tests, 3K agent-browser e2e. Ephemeral testcontainers state per run made parallel agents possible." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">13 — Safety net</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:60px">
+    <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">No manual review.<br>A real safety net.</h2>
+    <p style="margin:0;font:400 26px/1.4 Geist,system-ui,sans-serif;color:#999999;max-width:520px">“You shouldn't be doing code review manually anymore.” — the Uncle Bob argument, taken seriously.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px" data-anim="rise" >
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 32px;display:flex;flex-direction:column;gap:12px">
+      <span style="font:500 24px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">build</span>
+      <span style="font:600 54px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">every PR</span>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 32px;display:flex;flex-direction:column;gap:12px">
+      <span style="font:500 24px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">lint</span>
+      <span style="font:600 54px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">zero drift</span>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 32px;display:flex;flex-direction:column;gap:12px">
+      <span style="font:500 24px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">test</span>
+      <span style="font:600 54px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">~12K unit</span>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:34px 32px;display:flex;flex-direction:column;gap:12px">
+      <span style="font:500 24px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05)">integration</span>
+      <span style="font:600 54px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em">~3K e2e</span>
+    </div>
+  </div>
+  <div style="flex:1;min-height:0;display:flex;align-items:center;background:linear-gradient(90deg,rgba(250,255,5,.07),rgba(250,255,5,0));border:1px solid rgba(250,255,5,.25);border-radius:18px;padding:40px 46px;gap:44px" data-anim="rise" >
+    <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#FAFF05);flex:none">Game changer</span>
+    <p style="margin:0;font:500 42px/1.25 Geist,system-ui,sans-serif;letter-spacing:-.03em">An <span style="font-family:'Geist Mono',monospace">ephemeral</span> app boot with testcontainers state management — parallel agents on the same repo, all the way through GitHub CI.</p>
+  </div>
+</section>
+
+<section data-label="Proof not promises" data-screen-label="15" data-speaker-notes="The safety net isn't a slide claim — it's a green run on every PR: ephemeral integration tests with code coverage, spun up and torn down per run, same pipeline whether a human or an agent opened the PR." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">14 — Proof</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1.15fr;gap:56px;flex:1;min-height:0;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:26px">
+      <h2 style="margin:0;font:600 80px/1.02 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Not a slide.<br>A green run.</h2>
+      <p style="margin:0;font:400 29px/1.45 Geist,system-ui,sans-serif;color:#BBBBBB;max-width:600px" data-anim="rise">Every PR — human or agent — spins up an ephemeral integration environment, runs the suite with coverage, tears down. Same pipeline, no exceptions.</p>
+      <div style="display:flex;align-items:center;gap:20px;background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:26px 30px" data-anim="rise">
+        <span style="width:14px;height:14px;border-radius:999px;background:var(--acc,#FAFF05);flex:none"></span>
+        <span style="font:500 26px/1 'Geist Mono',monospace;color:#FFFFFF">ephemeral-integration</span>
+        <span style="font:400 26px/1 'Geist Mono',monospace;color:#999999">succeeded in 8m 32s</span>
+      </div>
+    </div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:14px;min-height:0" data-anim="fade">
+      <div style="position:relative;flex:1;min-height:0;border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden;background:#111111">
+        <img src="../shared/assets/ci-ephemeral-integration.jpg" alt="GitHub Actions ephemeral integration test run" style="width:100%;height:100%;object-fit:cover;object-position:left top">
+      </div>
+      <span style="font:400 20px/1.4 'Geist Mono',monospace;color:#858585">GitHub Actions · ephemeral-integration (none)</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="Context management" data-screen-label="16" data-speaker-notes="Two audiences: core developers and create-mercato-app users — the second one is where DX is decided. AGENTS.md, then a task router, module-facts generator, an example module, and a dynamic om-framework-context along three axes." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:40px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">15 — Context</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:48px">
+    <h2 style="margin:0;font:600 84px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Two contexts.<br>Three axes.</h2>
+    <div style="display:flex;gap:14px;align-items:center;font:400 24px/1 'Geist Mono',monospace;color:#999999" data-anim="fade">
+      <span style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:14px 20px">AGENTS.md</span>
+      <span>→</span>
+      <span style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:14px 20px">Task Router</span>
+      <span>→</span>
+      <span style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:14px 20px">module-facts</span>
+      <span>→</span>
+      <span style="background:rgba(250,255,5,.10);border:1px solid rgba(250,255,5,.3);border-radius:999px;padding:14px 20px;color:var(--acc,#FAFF05)">om-framework-context</span>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px" data-anim="rise" >
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:30px 34px;display:flex;align-items:baseline;gap:18px">
+      <span style="font:500 26px/1 'Geist Mono',monospace;color:#999999;white-space:nowrap;flex:none">context A</span>
+      <span style="font:500 34px/1.2 Geist,system-ui,sans-serif;letter-spacing:-.02em">Core developers</span>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(250,255,5,.3);border-radius:16px;padding:30px 34px;display:flex;align-items:baseline;gap:18px">
+      <span style="font:500 26px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05);white-space:nowrap;flex:none">context B</span>
+      <span style="font:500 34px/1.2 Geist,system-ui,sans-serif;letter-spacing:-.02em">create-mercato-app users — where DX is won</span>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;flex:1;min-height:0">
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:38px 36px;display:flex;flex-direction:column;gap:16px" data-anim="rise" >
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#FAFF05)">Axis 1</span>
+      <span style="font:500 42px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">Ownership</span>
+      <span style="font:400 26px/1.4 Geist,system-ui,sans-serif;color:#AAAAAA">architecture · data · ui<br>— what is to be done?</span>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:38px 36px;display:flex;flex-direction:column;gap:16px" data-anim="rise" >
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#FAFF05)">Axis 2</span>
+      <span style="font:500 42px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">Work unit</span>
+      <span style="font:400 26px/1.4 Geist,system-ui,sans-serif;color:#AAAAAA">module · route · page · component · entity</span>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:38px 36px;display:flex;flex-direction:column;gap:16px" data-anim="rise" >
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#FAFF05)">Axis 3</span>
+      <span style="font:500 42px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">SDLC</span>
+      <span style="font:400 26px/1.4 Geist,system-ui,sans-serif;color:#AAAAAA">which skill is optimal — <span style="font-family:'Geist Mono',monospace;color:#DDDDDD">om-auto-create-pr</span>, or chained with <span style="font-family:'Geist Mono',monospace;color:#DDDDDD">om-backend-ui</span></span>
+    </div>
+  </div>
+</section>
+
+<section data-label="Context evaluator" data-screen-label="17" data-speaker-notes="We built a context-evaluator: 220 use cases like 'add a field to CRM'. Run them per model, measure context size, files loaded, whether review passes, whether it builds. New cases come from om-share-this-session." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:40px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">16 — Evaluation</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:60px">
+    <h2 style="margin:0;font:600 88px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Optimize context.<br>Then drop a class.</h2>
+    <div style="display:flex;flex-direction:column;gap:6px;text-align:right" data-anim="rise">
+      <span style="font:600 96px/1 Geist,system-ui,sans-serif;letter-spacing:-.05em;color:var(--acc,#FAFF05)">220</span>
+      <span style="font:400 24px/1.3 'Geist Mono',monospace;color:#999999">use cases in the harness</span>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1.05fr 1fr;gap:56px;flex:1;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--acc,#FAFF05);border-radius:14px;padding:28px 32px;font:400 28px/1.4 'Geist Mono',monospace;color:#EEEEEE" data-anim="rise">“I want to modify CRM, adding a new field.”</div>
+      <p style="margin:0;font:400 29px/1.45 Geist,system-ui,sans-serif;color:#BBBBBB" data-anim="rise" >The <span style="font-family:'Geist Mono',monospace;color:#FFFFFF">context-evaluator</span> replays all 220 against each model we care about, and new cases arrive automatically from <span style="font-family:'Geist Mono',monospace;color:#FFFFFF">om-share-this-session</span> — artifacts plus every conversation turn.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px" data-anim="rise" >
+        <span style="font:400 23px/1 'Geist Mono',monospace;color:#DDDDDD;background:#171717;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:14px 20px">Opus</span>
+        <span style="font:400 23px/1 'Geist Mono',monospace;color:#DDDDDD;background:#171717;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:14px 20px">Sol</span>
+        <span style="font:400 23px/1 'Geist Mono',monospace;color:#DDDDDD;background:#171717;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:14px 20px">Luna</span>
+        <span style="font:400 23px/1 'Geist Mono',monospace;color:#DDDDDD;background:#171717;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:14px 20px">GPT-5 mini</span>
+        <span style="font:400 23px/1 'Geist Mono',monospace;color:#DDDDDD;background:#171717;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:14px 20px">Sonnet</span>
+      </div>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:36px 38px;display:flex;flex-direction:column;gap:22px" data-anim="rise" >
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#999999">What we measure</span>
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.07);font:400 27px/1.2 Geist,system-ui,sans-serif"><span>Context size</span><span style="font-family:'Geist Mono',monospace;color:var(--acc,#FAFF05)">tokens</span></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.07);font:400 27px/1.2 Geist,system-ui,sans-serif"><span>Files loaded</span><span style="font-family:'Geist Mono',monospace;color:var(--acc,#FAFF05)">count</span></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.07);font:400 27px/1.2 Geist,system-ui,sans-serif"><span>Code review passes</span><span style="font-family:'Geist Mono',monospace;color:var(--acc,#FAFF05)">pass / fail</span></div>
+        <div style="display:flex;justify-content:space-between;gap:20px;padding:20px 0;font:400 27px/1.2 Geist,system-ui,sans-serif"><span>Build is green</span><span style="font-family:'Geist Mono',monospace;color:var(--acc,#FAFF05)">pass / fail</span></div>
+      </div>
+      <span style="font:400 24px/1.45 Geist,system-ui,sans-serif;color:#999999">Better context beats a bigger model on most of our tasks.</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="Eval matrix" data-screen-label="18" data-speaker-notes="The context is now optimized based on user feedback and eval cases — full retune trail in PR #4529. The harness went from 0/184 on both lanes to a 96/184 baseline after the adapter fix, then kept climbing case by case." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">17 — Evidence</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1.1fr;gap:56px;flex:1;min-height:0;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:26px">
+      <h2 style="margin:0;font:600 78px/1.05 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">Context, retuned<br>by evidence.</h2>
+      <p style="margin:0;font:400 29px/1.45 Geist,system-ui,sans-serif;color:#BBBBBB;max-width:600px" data-anim="rise">The context is now optimized based on user feedback and eval cases — every retune has a paper trail.</p>
+      <a href="https://github.com/open-mercato/open-mercato/pull/4529" style="font:400 26px/1 'Geist Mono',monospace;color:var(--acc,#FAFF05);border-bottom:1px solid rgba(250,255,5,.35);padding-bottom:6px;width:fit-content" data-anim="fade">github.com/open-mercato/open-mercato · PR #4529</a>
+    </div>
+    <div style="position:relative;display:flex;flex-direction:column;gap:14px;min-height:0" data-anim="fade">
+      <div style="position:relative;flex:1;min-height:0;border:1px solid rgba(255,255,255,.10);border-radius:18px;overflow:hidden;background:#111111">
+        <img src="../shared/assets/eval-matrix-pr-4529.jpg" alt="Eval matrix comment on PR #4529" style="width:100%;height:100%;object-fit:cover;object-position:left top">
+      </div>
+      <span style="font:400 20px/1.4 'Geist Mono',monospace;color:#858585">github.com/open-mercato/open-mercato · PR #4529</span>
+    </div>
+  </div>
+</section>
+
+<section data-label="What's next" data-screen-label="19" data-speaker-notes="Next: Open Mercato Cloud browser sandboxes — VS Code, Codex and Claude with Cezar and skills for safe dev. Try it at openmercatocloud.com. And OM Model 0.1, a fine-tuned Qwen aiming to beat plain Luna and Sonnet on Open Mercato tasks." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;gap:44px;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex:none">
+    <span style="font:500 19px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--acc,#FAFF05)">18 — Next</span>
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:26px;opacity:.5">
+  </div>
+  <h2 style="margin:0;font:600 92px/1 Geist,system-ui,sans-serif;letter-spacing:-.04em" data-anim="rise">What's next?</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;min-height:0">
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:32px 34px;display:flex;flex-direction:column;gap:16px;min-height:0" data-anim="rise">
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#FAFF05)">01 — Sandboxes</span>
+      <span style="font:500 42px/1.08 Geist,system-ui,sans-serif;letter-spacing:-.03em">VS Code, Codex and Claude in the browser</span>
+      <span style="font:400 23px/1.4 Geist,system-ui,sans-serif;color:#AAAAAA">Open Mercato, Next.js and plain React apps — all in one browser session.</span>
+      <a href="https://openmercatocloud.com" target="_blank" rel="noopener noreferrer" style="font:500 22px/1 'Geist Mono',monospace;color:#000000;background:var(--acc,#FAFF05);border-radius:999px;padding:15px 20px;width:fit-content;display:inline-flex;align-items:center;gap:12px">openmercatocloud.com <span aria-hidden="true">↗</span></a>
+      <div style="position:relative;flex:1;min-height:0;border:1px solid rgba(255,255,255,.10);border-radius:14px;overflow:hidden">
+        <iframe src="https://www.youtube-nocookie.com/embed/Ne9FmJkZdUc?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=Ne9FmJkZdUc&amp;controls=0&amp;playsinline=1&amp;rel=0&amp;modestbranding=1" title="Open Mercato Cloud browser sandbox demo" allow="autoplay; encrypted-media; picture-in-picture" loading="eager" style="display:block;width:100%;height:100%;border:0;pointer-events:none"></iframe>
+      </div>
+    </div>
+    <div style="background:#111111;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:40px 42px;display:flex;flex-direction:column;gap:22px" data-anim="rise" >
+      <span style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc,#FAFF05)">02 — OM Model 0.1</span>
+      <span style="font:500 48px/1.1 Geist,system-ui,sans-serif;letter-spacing:-.03em">A fine-tune that knows our framework</span>
+      <span style="font:400 26px/1.45 Geist,system-ui,sans-serif;color:#AAAAAA">Qwen 3.7, tuned to beat plain Luna and Sonnet on Open Mercato tasks. Opus, one day.</span>
+      <div style="margin-top:auto;display:flex;align-items:flex-end;gap:22px">
+        <span style="font:600 120px/0.9 Geist,system-ui,sans-serif;letter-spacing:-.05em;color:var(--acc,#FAFF05)">0.1</span>
+        <span style="font:400 24px/1.3 'Geist Mono',monospace;color:#858585;padding-bottom:14px">in training</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-label="Thanks" data-screen-label="20" data-speaker-notes="Thanks. Skills and Cezar are both open — stars welcome. Come find me after, or mail piotr@openmercato.com." style="background:#000000;color:#FFFFFF;font-family:Geist,system-ui,sans-serif;padding:80px 104px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative">
+  <div style="position:absolute;inset:0;background:radial-gradient(1000px 560px at 88% 108%, rgba(250,255,5,.10), transparent 65%);pointer-events:none" data-anim="fade"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;position:relative">
+    <img src="https://www.agent.sh/assets/speakers/logos/openMercato.svg" alt="Open Mercato" style="height:34px">
+    <a href="https://aicodingsummit.com/nyc/" class="summit-logo" aria-label="AI Coding Summit NYC, November 2026"><img src="ai-coding-summit-nyc/logo.svg" alt="AI Coding Summit" width="190" height="48"></a>
+  </div>
+  <div style="position:relative;display:flex;flex-direction:column;gap:44px">
+    <h2 style="margin:0;font:600 156px/0.95 Geist,system-ui,sans-serif;letter-spacing:-.05em" data-anim="rise">Thanks.</h2>
+    <div style="height:1px;background:linear-gradient(90deg,var(--acc,#FAFF05),rgba(255,255,255,.06));max-width:1000px" data-anim="bar"></div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 56px" data-anim="rise" >
+      <a href="https://github.com/open-mercato/skills" style="font:400 28px/1.3 'Geist Mono',monospace;display:flex;gap:18px;align-items:baseline;white-space:nowrap"><span style="color:#858585;font-size:22px;white-space:nowrap;flex:none">skills</span>github.com/open-mercato/skills</a>
+      <a href="https://github.com/open-mercato/cezar" style="font:400 28px/1.3 'Geist Mono',monospace;display:flex;gap:18px;align-items:baseline;white-space:nowrap"><span style="color:#858585;font-size:22px;white-space:nowrap;flex:none">cezar</span>github.com/open-mercato/cezar</a>
+      <a href="https://github.com/open-mercato/open-mercato" style="font:400 28px/1.3 'Geist Mono',monospace;display:flex;gap:18px;align-items:baseline;white-space:nowrap"><span style="color:#858585;font-size:22px;white-space:nowrap;flex:none">star us</span>github.com/open-mercato/open-mercato</a>
+      <a href="mailto:piotr@openmercato.com" style="font:400 28px/1.3 'Geist Mono',monospace;display:flex;gap:18px;align-items:baseline;white-space:nowrap"><span style="color:#858585;font-size:22px;white-space:nowrap;flex:none">mail</span>piotr@openmercato.com</a>
+    </div>
+  </div>
+  <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:40px" data-anim="rise" >
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font:500 32px/1.2 Geist,system-ui,sans-serif;letter-spacing:-.02em">Piotr Karwatka</span>
+      <span style="font:400 24px/1.2 'Geist Mono',monospace;color:#999999">linkedin.com/in/piotrkarwatka</span>
+    </div>
+    <span style="font:400 22px/1.2 'Geist Mono',monospace;color:#858585;letter-spacing:.06em">Start with 80% done.</span>
+  </div>
+</section>
+
+</x-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FAFF05&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FAFF05&quot;,&quot;#7CE7C6&quot;,&quot;#8AB4FF&quot;,&quot;#FF7A45&quot;]}}">
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#FAFF05' };
+  }
+}
+
+</script>
+</body>
+</html>
